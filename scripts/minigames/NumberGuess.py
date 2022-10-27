@@ -1,5 +1,6 @@
 ﻿import random
 import discord
+import asyncio
 
 
 async def playNumberGuesser(ctx, client):
@@ -14,9 +15,8 @@ async def playNumberGuesser(ctx, client):
     def check(msg):
         return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
 
-    msg = await client.wait_for("message", check=check)
-
     try:
+        msg = await client.wait_for("message", check=check)
         number = int(msg.content)
 
         if (number < rand):
@@ -64,5 +64,8 @@ async def playNumberGuesser(ctx, client):
 ⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠻⣿⣿⣿⡿⠁
 ⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠉⠀⠙⠛⠉⠀⠀
 """)
+
+    except asyncio.TimeoutError:
+        await ctx.send("Reply faster next time!")
 
 
