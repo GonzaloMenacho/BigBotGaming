@@ -28,12 +28,13 @@ else:
 TOKEN = os.getenv('TOKEN')
 GUILD = os.getenv('GUILD')
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 
-client = discord.Client(intents=intents)
+client = commands.Bot(command_prefix="!", intents=intents)
 
 
+#------------Events--------------#
 @client.event
 async def on_ready():
     print(f'Logged in as a bot {client.user}')
@@ -46,6 +47,34 @@ async def on_ready():
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'
         )
+
+# member joining and leaving the server
+@client.event
+async def on_member_join(member):
+    print(f'{member} has joined the server.')
+
+@client.event
+async def on_member_remove(member):
+    print(f'{member} has left the server')
+
+#------------Commands--------------#
+
+# display ping
+@client.command()
+async def ping(ctx):
+    await ctx.send(f"Ping: {round(client.latency * 1000)}ms")
+
+# kick
+@client.command()
+async def kick(ctx, member : discord.Member, *, reason =None): 
+    await member.kick(reason=reason)
+
+# ban
+@client.command()
+async def ban(ctx, member : discord.Member, *, reason =None): 
+    await member.ban(reason=reason)
+    await ctx.send(f'Banned {member.mention}')
+
 
 
 client.run(TOKEN)
