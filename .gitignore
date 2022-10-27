@@ -6,5 +6,6 @@ venv/
 env/
 dist/
 *.suo
+.vs/
 
 lib/
