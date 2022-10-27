@@ -1,5 +1,6 @@
 #python -m pip install discord.py
 #
+from xml.dom import pulldom
 import discord
 from discord.ext import commands
 
@@ -14,6 +15,7 @@ import scripts
 from dotenv import load_dotenv
 
 from scripts.minigames.NumberGuess import playNumberGuesser
+from scripts.minigames.RedditPull import pullRedditPost
 
 load_dotenv()
 
@@ -82,6 +84,11 @@ async def ban(ctx, member : discord.Member, *, reason =None):
 @client.command()
 async def numberguess(ctx):
     await playNumberGuesser(ctx, client)
+
+# reddit posting function
+@client.command()
+async def redditpost(ctx):
+    await pullRedditPost(ctx)
 
 
 

@@ -28,6 +28,9 @@
     <Compile Include="scripts\minigames\NumberGuess.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="scripts\minigames\RedditPull.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="doc\" />
