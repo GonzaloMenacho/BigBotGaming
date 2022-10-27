@@ -25,11 +25,15 @@
     <Compile Include="scripts\genericdiscordfunction.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="scripts\minigames\NumberGuess.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="doc\" />
     <Folder Include="apidoc\" />
     <Folder Include="lib\" />
+    <Folder Include="scripts\minigames\" />
     <Folder Include="tests\" />
     <Folder Include="scripts\" />
   </ItemGroup>

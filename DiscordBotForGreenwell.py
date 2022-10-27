@@ -8,9 +8,12 @@ import os
 import random
 import sys
 
+import scripts
 #import scripts.genericdiscordfunction
 
 from dotenv import load_dotenv
+
+from scripts.minigames.NumberGuess import playNumberGuesser
 
 load_dotenv()
 
@@ -74,6 +77,11 @@ async def kick(ctx, member : discord.Member, *, reason =None):
 async def ban(ctx, member : discord.Member, *, reason =None): 
     await member.ban(reason=reason)
     await ctx.send(f'Banned {member.mention}')
+
+# number guesser minigame test function
+@client.command()
+async def numberguess(ctx, member : discord.Member):
+    await playNumberGuesser(ctx, member)
 
 
 
