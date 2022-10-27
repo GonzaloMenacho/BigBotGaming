@@ -2,6 +2,7 @@ import random
 import discord
 
 
-def playNumberGuesser(ctx, member: discord.Member, ):
+async def playNumberGuesser(ctx):
     rand = random.randrange(1,10)
-    ctx.send(f"{member}, you are a {rand}!")
+    #ctx.send(f"{member.mention}, you are a {rand}!")
+    await ctx.send(f"You are a {rand}!")
