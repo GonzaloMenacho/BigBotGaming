@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DiscordBotForGreenwell.py" />
+    <Compile Include="scripts\dbmanagement\SQLServerConnect.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="scripts\genericdiscordfunction.py">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,7 @@
     <Folder Include="apidoc\" />
     <Folder Include="lib\" />
     <Folder Include="scripts\minigames\" />
+    <Folder Include="scripts\dbmanagement\" />
     <Folder Include="tests\" />
     <Folder Include="scripts\" />
   </ItemGroup>
