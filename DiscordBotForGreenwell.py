@@ -81,7 +81,8 @@ async def ban(ctx, member : discord.Member, *, reason =None):
 # number guesser minigame test function
 @client.command()
 async def numberguess(ctx):
-    await playNumberGuesser(ctx)
+    user = ctx.message.author
+    await playNumberGuesser(ctx, user)
 
 
 
