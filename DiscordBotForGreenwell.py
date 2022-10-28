@@ -1,6 +1,8 @@
 #python -m pip install discord.py
 #
 from xml.dom import pulldom
+
+from mysql.connector.pooling import connect
 import discord
 from discord.ext import commands
 
@@ -16,6 +18,7 @@ from dotenv import load_dotenv
 
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
+from scripts.dbmanagement.SQLServerConnect import connect_to_DB
 
 load_dotenv()
 
@@ -32,6 +35,7 @@ else:
 
 TOKEN = os.getenv('TOKEN')
 GUILD = os.getenv('GUILD')
+DBPASSWORD = os.getenv('DBPASSWORD')
 
 intents = discord.Intents.all()
 intents.members = True
@@ -90,6 +94,9 @@ async def numberguess(ctx):
 async def redditpost(ctx):
     await pullRedditPost(ctx)
 
-
+# connect to the localhost database
+@client.command()
+async def dbconnect(ctx):
+    await connect_to_DB(ctx, DBPASSWORD)
 
 client.run(TOKEN)
