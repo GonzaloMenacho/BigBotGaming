@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
-from scripts.dbmanagement.SQLServerConnect import connect_to_DB
+from scripts.dbmanagement.SQLServerConnect import testdb
 
 load_dotenv()
 
@@ -96,7 +96,7 @@ async def redditpost(ctx):
 
 # connect to the localhost database
 @client.command()
-async def dbconnect(ctx):
-    await connect_to_DB(ctx, DBPASSWORD)
+async def createtestdb(ctx):
+    await testdb(ctx, DBPASSWORD, "test_db")
 
 client.run(TOKEN)
