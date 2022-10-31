@@ -94,29 +94,29 @@ async def on_member_remove(member):
 #------------Commands--------------#
 
 # display ping
-@client.command()
-async def ping(ctx):
+@client.command(name="ping")
+async def on_ping(ctx):
     await ctx.send(f"Ping: {round(client.latency * 1000)}ms")
 
 # kick
-@client.command()
-async def kick(ctx, member : discord.Member, *, reason =None): 
+@client.command(name="kick")
+async def on_kick(ctx, member : discord.Member, *, reason =None): 
     await member.kick(reason=reason)
 
 # ban
-@client.command()
-async def ban(ctx, member : discord.Member, *, reason =None): 
+@client.command(name="ban")
+async def on_ban(ctx, member : discord.Member, *, reason =None): 
     await member.ban(reason=reason)
     await ctx.send(f'Banned {member.mention}')
 
 # number guesser minigame
-@client.command()
-async def numberguess(ctx):
+@client.command(name="numberguess")
+async def on_number_guesser(ctx):
     await playNumberGuesser(ctx, client)
 
 # reddit posting function
-@client.command()
-async def redditpost(ctx, subredditname: str="okaybuddyretard"):
+@client.command(name="reddit",help="!reddit <subreddit>")
+async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
     await pullRedditPost(ctx, subredditname)
 
 # connect to the localhost database
