@@ -1,1 +1,2 @@
 # MinigameDiscordBot
+# Using the Giphy Developers Doc: https://developers.giphy.com/docs/sdk and methods imported from the giphy_client.DefaultApi: https://github.com/Giphy/giphy-python-client/blob/master/docs/DefaultApi.md
