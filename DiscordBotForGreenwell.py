@@ -2,7 +2,7 @@
 #
 from xml.dom import pulldom
 
-from mysql.connector.pooling import connect
+#from mysql.connector.pooling import connect
 import discord
 from discord.ext import commands
 
@@ -116,8 +116,8 @@ async def numberguess(ctx):
 
 # reddit posting function
 @client.command()
-async def redditpost(ctx):
-    await pullRedditPost(ctx)
+async def redditpost(ctx, subredditname: str="okaybuddyretard"):
+    await pullRedditPost(ctx, subredditname)
 
 # connect to the localhost database
 @client.command()

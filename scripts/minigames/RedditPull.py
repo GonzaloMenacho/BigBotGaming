@@ -18,11 +18,8 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-async def pullRedditPost(ctx):
-    subredditname = "okaybuddyretard"
+async def pullRedditPost(ctx, subredditname: str="okaybuddyretard"):
     subreddit = reddit.subreddit(subredditname)
-
-    await ctx.send(f"Reddit is installed and read only? {reddit.read_only}")
-    for submission in subreddit.hot(limit=1):
-        await ctx.send(f"Post from r/{subredditname} {submission.url}")
+    submission = subreddit.random()
+    await ctx.send(f"Post from r/{subredditname} {submission.url}")
     
