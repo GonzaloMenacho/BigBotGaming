@@ -6,6 +6,9 @@ from mysql.connector.pooling import connect
 import discord
 from discord.ext import commands
 
+import giphy_client
+from giphy_client.rest import ApiException
+
 import json
 import os
 import random
@@ -16,6 +19,7 @@ import scripts
 
 from dotenv import load_dotenv
 
+from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.dbmanagement.SQLServerConnect import connect_to_DB
@@ -36,6 +40,7 @@ else:
 TOKEN = os.getenv('TOKEN')
 GUILD = os.getenv('GUILD')
 DBPASSWORD = os.getenv('DBPASSWORD')
+GIPHY_API = os.getenv('GIPHY_API')
 
 intents = discord.Intents.all()
 intents.members = True
@@ -57,11 +62,31 @@ async def on_ready():
         f'{guild.name}(id: {guild.id})'
         )
 
-# member joining and leaving the server
+# member joining the server, bot sends welcome title, description, and random welcome gif
 @client.event
-async def on_member_join(member):
-    print(f'{member} has joined the server.')
+async def on_member_join(member: discord.Member=None):
+    api_key = GIPHY_API
+    api_instance = giphy_client.DefaultApi()
+    # arguments for gifs_search_get
+    q = 'welcome' 
+    rating = 'g' # filters based on rating (g, pg, pg-13, r)
+    limit = 10
+    name = member.display_name
+    channel = client.get_channel(1035188653951041627)
+    try:
+        # searches all Giphy Gifs based on arguments above
+        api_response = api_instance.gifs_search_get(api_key, q, limit=limit, rating=rating)
+        # embeded bot response
+        embed = discord.Embed(title=(f'Hi {name}! Welcome to the server.'),description="You are one of us now  \U0001f600.")
+        # select random gif from list[Gif] and set as embeded image as the orignal image url from the Gif Object
+        gifs = list(api_response.data)
+        gif = random.choice(gifs)
+        embed.set_image(url=gif.images.original.url)
+        await channel.send(embed=embed)
+    except ApiException as e:
+        print("Exception when calling DefaultApi-'>gifs_search_get': %s\n" % e)
 
+# member leaving servers
 @client.event
 async def on_member_remove(member):
     print(f'{member} has left the server')
@@ -98,5 +123,10 @@ async def redditpost(ctx):
 @client.command()
 async def dbconnect(ctx):
     await connect_to_DB(ctx, DBPASSWORD)
+
+# pass a topic and bot sends a randomized gif 
+@client.command()
+async def gif(ctx,*,topic):
+    await playGif(ctx,topic)
 
 client.run(TOKEN)
