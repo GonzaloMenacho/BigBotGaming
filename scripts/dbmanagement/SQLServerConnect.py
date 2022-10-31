@@ -6,10 +6,13 @@
 # pip install pandas
 
 import discord
-
+import dotenv
+import os
 import mysql.connector
 from mysql.connector import Error
 import pandas as pd
+
+DBPASSWORD = os.getenv('DBPASSWORD')
 
 def create_server_connection(host_name, user_name, user_password):
     # close any existing connections
@@ -27,9 +30,9 @@ def create_server_connection(host_name, user_name, user_password):
 
     return connection
 
-async def connect_to_DB(ctx, password):
+async def connect_to_DB(ctx):
     # pw is the root password for the MySQL Server as a string.
-    pw = password
+    pw = DBPASSWORD
     try:
         connection = create_server_connection("localhost", "root", pw)
         await ctx.send(f"MySQL Database connection successful")

@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
+from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLServerConnect import connect_to_DB
 
 load_dotenv()
@@ -39,7 +40,6 @@ else:
 
 TOKEN = os.getenv('TOKEN')
 GUILD = os.getenv('GUILD')
-DBPASSWORD = os.getenv('DBPASSWORD')
 GIPHY_API = os.getenv('GIPHY_API')
 
 intents = discord.Intents.all()
@@ -114,6 +114,11 @@ async def on_ban(ctx, member : discord.Member, *, reason =None):
 async def on_number_guesser(ctx):
     await playNumberGuesser(ctx, client)
 
+# connect four minigame
+@client.command(name="connect4")
+async def on_connect_four(ctx):
+    await playConnectFour(ctx, client)
+
 # reddit posting function
 @client.command(name="reddit",help="!reddit <subreddit>")
 async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
@@ -122,11 +127,12 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
 # connect to the localhost database
 @client.command(name="dbconnect")
 async def on_dbconnect(ctx):
-    await connect_to_DB(ctx, DBPASSWORD)
+    await connect_to_DB(ctx)
 
 # pass a topic and bot sends a randomized gif 
 @client.command(name="gif")
 async def on_gif(ctx,*,topic):
     await playGif(ctx,topic)
+
 
 client.run(TOKEN)
