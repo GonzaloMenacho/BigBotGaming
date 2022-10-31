@@ -5,6 +5,7 @@ from xml.dom import pulldom
 #from mysql.connector.pooling import connect
 import discord
 from discord.ext import commands
+from discord import app_commands
 
 import giphy_client
 from giphy_client.rest import ApiException
@@ -44,7 +45,6 @@ GIPHY_API = os.getenv('GIPHY_API')
 
 intents = discord.Intents.all()
 intents.members = True
-
 client = commands.Bot(command_prefix="!", intents=intents)
 
 
@@ -116,8 +116,8 @@ async def on_number_guesser(ctx):
 
 # connect four minigame
 @client.command(name="connect4")
-async def on_connect_four(ctx):
-    await playConnectFour(ctx, client)
+async def on_connect_four(ctx, opponent: discord.Member):
+    await playConnectFour(ctx, ctx.author, opponent)
 
 # reddit posting function
 @client.command(name="reddit",help="!reddit <subreddit>")
@@ -133,6 +133,5 @@ async def on_dbconnect(ctx):
 @client.command(name="gif")
 async def on_gif(ctx,*,topic):
     await playGif(ctx,topic)
-
 
 client.run(TOKEN)
