@@ -120,13 +120,13 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
     await pullRedditPost(ctx, subredditname)
 
 # connect to the localhost database
-@client.command()
-async def dbconnect(ctx):
+@client.command(name="dbconnect")
+async def on_dbconnect(ctx):
     await connect_to_DB(ctx, DBPASSWORD)
 
 # pass a topic and bot sends a randomized gif 
-@client.command()
-async def gif(ctx,*,topic):
+@client.command(name="gif")
+async def on_gif(ctx,*,topic):
     await playGif(ctx,topic)
 
 client.run(TOKEN)
