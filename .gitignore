@@ -11,3 +11,5 @@ dist/
 .vs/
 
 lib/
+
+.DS_Store
