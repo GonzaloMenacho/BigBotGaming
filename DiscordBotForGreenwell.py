@@ -26,6 +26,7 @@ from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLServerConnect import connect_to_DB
 from scripts.bibleversememe.versescript import sendverse
+from scripts.tweet import grab_latest_tweet
 
 load_dotenv()
 
@@ -139,5 +140,10 @@ async def on_gif(ctx,*,topic):
 @client.command(name="bible")
 async def on_bible(ctx):
     await sendverse(ctx)
+
+# sends specific users latest tweet DO NOT USE MORE THAN 900 TIMES IN 15 MINUTES
+@client.command(name="DeepLeffen")
+async def on_DeepLeffen(ctx):
+    await grab_latest_tweet(ctx)
 
 client.run(TOKEN)
