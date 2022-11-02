@@ -25,6 +25,7 @@ from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLServerConnect import connect_to_DB
+from scripts.bibleversememe.versescript import sendverse
 
 load_dotenv()
 
@@ -133,5 +134,10 @@ async def on_dbconnect(ctx):
 @client.command(name="gif")
 async def on_gif(ctx,*,topic):
     await playGif(ctx,topic)
+
+# send random bible verse that is deemed "funny" or "unordinary"
+@client.command(name="bible")
+async def on_bible(ctx):
+    await sendverse(ctx)
 
 client.run(TOKEN)
