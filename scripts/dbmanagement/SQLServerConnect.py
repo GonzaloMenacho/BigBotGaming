@@ -2,8 +2,9 @@
 ## https://www.freecodecamp.org/news/connect-python-with-sql/
 
 # Run the following commands to install the packages before importing:
-# pip install mysql-connector-python
+# pip install mysql-connector
 # pip install pandas
+# praw, discord, dotenv
 
 import discord
 import dotenv
