@@ -14,7 +14,10 @@ reddit = praw.Reddit(
 )
 
 async def pullRedditPost(ctx, subredditname: str="okaybuddyretard"):
-    subreddit = reddit.subreddit(subredditname)
-    random_submission = subreddit.random()
-    await ctx.send(f"Post from r/{subredditname} {random_submission.url}")
+    try:
+        subreddit = reddit.subreddit(subredditname)
+        random_submission = subreddit.random()
+        await ctx.send(f"Post from r/{subredditname} {random_submission.url}")
+    except:
+        print(f'some sort of HTTP error has happened, probably from a call to a nonexistant subreddit')
     
