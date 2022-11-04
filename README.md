@@ -3,9 +3,24 @@
 
 This project is a multi-purpose Discord bot made for primarily for fun. The features and commands we decided to add to the bot were features we thought would be funny or entertaining.
 Currently, the bot has commands that: 
-- Pull posts from multiple different social media API's like Twitter and Reddit
+- Pull posts from multiple different social media API's like Twitter, Reddit, and Giphy
 - Play through small minigames
 - Store minigame points and user information in a locally run MySQL database server
 - Send messages of randomly chosen quotes (i.e., bible verses)
+- Send welcome messages to new users
+- Send gifs based off of what users request
 
 In the future, we intend to expand upon these commands and add more minigames along with rewards that users can spend their minigame points on. These rewards can include custome emotes or server roles.
+
+### Bot Examples
+![image](https://user-images.githubusercontent.com/72235489/199866877-7caa14b2-5ef8-435b-a585-b98eee940e12.png)
+
+![image](https://user-images.githubusercontent.com/72235489/199866814-0690876a-07de-44dc-bb41-846e736f5fd8.png)
+
+![image](https://user-images.githubusercontent.com/72235489/199866893-685e5a56-0c73-4ff5-b835-1df5381cf2a3.png)
+
+![image](https://user-images.githubusercontent.com/72235489/199866914-cf26ae0c-0564-48fe-b467-3d19fba44dbb.png)
+
+![image](https://user-images.githubusercontent.com/72235489/199866922-f9650376-6d43-48cf-9eb5-ddb7a1e5593d.png)
+
+![image](https://user-images.githubusercontent.com/72235489/199866927-bbb81338-a8d9-4068-bc95-82ba3cf97d6b.png)
