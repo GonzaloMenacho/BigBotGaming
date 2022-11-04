@@ -24,7 +24,7 @@ from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
-from scripts.dbmanagement.SQLServerConnect import connect_to_DB
+from scripts.dbmanagement.SQLServerConnect import testdb
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 
@@ -129,7 +129,7 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
 # connect to the localhost database
 @client.command(name="dbconnect")
 async def on_dbconnect(ctx):
-    await connect_to_DB(ctx)
+    await testdb(ctx, "test_db")
 
 # pass a topic and bot sends a randomized gif 
 @client.command(name="gif")
