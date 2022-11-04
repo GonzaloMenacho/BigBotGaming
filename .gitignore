@@ -1,6 +1,7 @@
 .env
 __pycache__/
 *.py[cod]
+*.user
 
 .venv
 venv/
@@ -11,3 +12,5 @@ dist/
 .vs/
 
 lib/
+
+.DS_Store
