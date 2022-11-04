@@ -10,6 +10,18 @@ Currently, the bot has commands that:
 - Send welcome messages to new users
 - Send gifs based off of what users request
 
+Commands:
+- !ping
+- !kick
+- !ban
+- !numberguess
+- !connect4
+- !reddit
+- !dbconnect
+- !gif
+- !bible
+- !DeepLeffen
+
 In the future, we intend to expand upon these commands and add more minigames along with rewards that users can spend their minigame points on. These rewards can include custome emotes or server roles.
 
 ### Bot Examples
@@ -22,5 +34,3 @@ In the future, we intend to expand upon these commands and add more minigames al
 ![image](https://user-images.githubusercontent.com/72235489/199866914-cf26ae0c-0564-48fe-b467-3d19fba44dbb.png)
 
 ![image](https://user-images.githubusercontent.com/72235489/199866922-f9650376-6d43-48cf-9eb5-ddb7a1e5593d.png)
-
-![image](https://user-images.githubusercontent.com/72235489/199866927-bbb81338-a8d9-4068-bc95-82ba3cf97d6b.png)
