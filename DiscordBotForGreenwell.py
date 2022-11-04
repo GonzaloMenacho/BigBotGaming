@@ -74,7 +74,7 @@ async def on_member_join(member: discord.Member=None):
     rating = 'g' # filters based on rating (g, pg, pg-13, r)
     limit = 10
     name = member.display_name
-    channel = client.get_channel(1035188653951041627)
+    channel = discord.utils.get(member.guild.text_channels, name="welcome")
     try:
         # searches all Giphy Gifs based on arguments above
         api_response = api_instance.gifs_search_get(api_key, q, limit=limit, rating=rating)
