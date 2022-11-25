@@ -1,98 +1,84 @@
-# Resources used:
-## https://www.freecodecamp.org/news/connect-python-with-sql/
-
 # Run the following commands to install the packages before importing:
-# pip install mysql-connector
 # pip install pandas
-# praw, discord, dotenv
+# praw, discord, dotenv, sqlite3
 
 import discord
 import dotenv
 import os
-import mysql.connector
-from mysql.connector import Error
 import pandas as pd
+import sqlite3
 
 DBPASSWORD = os.getenv('DBPASSWORD')
 
-connection = None
 
-# connect to a database within the server
-def create_db_connection(host_name, user_name, user_password, db_name):
-    # close any existing connections
-    connection = None
+def connectDB():
+    # connect to database
+    connection = sqlite3.connect(r"scripts\dbmanagement\UserInfo.db")
+    print("Database opened successfully")
+    # create db cursor
+    cur = connection.cursor()
+    print("Connection made")
+    return connection, cur
 
-    try:
-        connection = mysql.connector.connect(
-            host = host_name,
-            user = user_name,
-            passwd = user_password,
-            database = db_name
-        )
-        print("MySQL Database connection successful")
-    except Error as err:
-        print(f"Error: '{err}'")
 
-    return connection
 
 # for creating tables and inserting data
-def execute_query(connection, query):
-    cursor = connection.cursor()
+def execute_query(query):
+    connection, cur = connectDB()
     try:
-        cursor.execute(query)
+        cur.execute(query)
         connection.commit()
         print("Query successful")
-    except Error as err:
+        connection.close()          # saves the commit
+    except Exception as err:
         print(f"Error: '{err}'")
 
 # for viewing tables and data
-def read_query(connection, query):
-    cursor = connection.cursor()
+def read_query(query):
+    connection, cur = connectDB()
     result = None
     try:
-        cursor.execute(query)
-        result = cursor.fetchall()
+        cur.execute(query)
+        result = cur.fetchall()
         return result
-    except Error as err:
+    except Exception as err:
         print(f"Error: '{err}'")
 
-def make_test_table(connection):
+def make_test_table():
     create_test_table = """
-    CREATE TABLE high_scores (
-      username VARCHAR(40) PRIMARY KEY,
-      points INT
+    CREATE TABLE UserStats (
+      "User"	TEXT NOT NULL UNIQUE,
+	  "Points"	INTEGER,
+      "Gold"    INTEGER,
+	  PRIMARY KEY("User")
       );
      """
     pop_test_table = """
-    INSERT INTO high_scores VALUES
-    ('Player 3', 3),
-    ('Player 2', 2),
-    ('Player 1', 1);
+    INSERT INTO UserStats VALUES
+    ('Player 3', 3, 30),
+    ('Player 2', 2, 20),
+    ('Player 1', 1, 10);
     """
 
-    execute_query(connection, create_test_table) # execute our defined query
-    execute_query(connection, pop_test_table)
+    execute_query(create_test_table) # execute our defined query
+    execute_query(pop_test_table)
 
 
-async def view_test_table(ctx, connection):
+async def view_test_table(ctx):
     select_query = """
-    SELECT * FROM high_scores;
+    SELECT * FROM UserStats;
     """
     
-    results = read_query(connection, select_query)
+    results = read_query(select_query)
 
     for result in results:
-        await ctx.send(result)
+        name, points, gold = result
+        await ctx.send("{0}\nPoints: {1}\nGold: {2}".format(name, points, gold))
 
-async def testdb(ctx, db_name):
-    # pw is the root password for the MySQL Server as a string.
-    pw = DBPASSWORD
-    db = db_name
+async def testdb(ctx):
     try:
-        connection = create_db_connection("localhost", "root", pw, db)
-        # await ctx.send(f"MySQL Database connection successful")
-        make_test_table(connection)
+        make_test_table()
         print("test table created")
-        await view_test_table(ctx, connection)
-    except Error as err:
+        await view_test_table(ctx)
+    except Exception as err:
         print(f"Error: '{err}'")

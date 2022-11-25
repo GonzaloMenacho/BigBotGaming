@@ -129,7 +129,7 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
 # connect to the localhost database
 @client.command(name="dbconnect")
 async def on_dbconnect(ctx):
-    await testdb(ctx, "test_db")
+    await testdb(ctx)
 
 # pass a topic and bot sends a randomized gif 
 @client.command(name="gif")
