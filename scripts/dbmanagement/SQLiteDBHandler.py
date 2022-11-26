@@ -42,9 +42,8 @@ def read_query(query):
     except Exception as err:
         print(f"Error: '{err}'")
 
-def update_points(ctx, points_to_add):
+def update_points(userID, points_to_add):
     points_to_add = int(points_to_add)
-    userID = ctx.message.author.id
     findUsers = """
     SELECT ID FROM UserStats;
     """
@@ -72,9 +71,8 @@ def update_points(ctx, points_to_add):
         """
     execute_query(updateQuery)
 
-def update_gold(ctx, gold_to_add):
+def update_gold(userID, gold_to_add):
     gold_to_add = int(gold_to_add)
-    userID = ctx.message.author.id
     findUsers = """
     SELECT ID FROM UserStats;
     """
@@ -116,7 +114,9 @@ async def view_stats(ctx):
         await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
 
 async def test_points(ctx):
-    update_points(ctx, int(1))
+    userID = ctx.message.author.id
+    update_points(userID, int(1))
 
 async def test_gold(ctx):
-    update_gold(ctx, int(1))
+    userID = ctx.message.author.id
+    update_gold(userID, int(1))
