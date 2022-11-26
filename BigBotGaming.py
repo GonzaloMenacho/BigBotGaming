@@ -23,7 +23,7 @@ from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
-from scripts.dbmanagement.SQLiteDBHandler import testdb
+from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 
@@ -120,10 +120,20 @@ async def on_connect_four(ctx, opponent: discord.Member):
 async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
     await pullRedditPost(ctx, subredditname)
 
-# connect to the localhost database
-@client.command(name="dbconnect")
-async def on_dbconnect(ctx):
-    await testdb(ctx)
+# displays the stats of all users on the server
+@client.command(name="serverstats")
+async def on_serverstats(ctx):
+    await view_stats(ctx)
+
+# gives points to the user
+@client.command(name="gibpoints")
+async def on_gibpoints(ctx):
+    await test_points(ctx)
+
+# gives gold to the user
+@client.command(name="gibgold")
+async def on_gibgold(ctx):
+    await test_gold(ctx)
 
 # pass a topic and bot sends a randomized gif 
 @client.command(name="gif", help="!gif <search term>")
