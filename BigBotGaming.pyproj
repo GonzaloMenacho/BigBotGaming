@@ -23,7 +23,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="scripts\dbmanagement\SQLServerConnect.py">
+    <Compile Include="scripts\dbmanagement\SQLiteDBHandler.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="scripts\genericdiscordfunction.py">

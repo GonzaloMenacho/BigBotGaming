@@ -30,7 +30,7 @@ def create_db_connection(host_name, user_name, user_password, db_name):
             database = db_name
         )
         print("MySQL Database connection successful")
-    except Error as err:
+    except Exception as err:
         print(f"Error: '{err}'")
 
     return connection
@@ -42,7 +42,7 @@ def execute_query(connection, query):
         cursor.execute(query)
         connection.commit()
         print("Query successful")
-    except Error as err:
+    except Exception as err:
         print(f"Error: '{err}'")
 
 # for viewing tables and data
@@ -53,7 +53,7 @@ def read_query(connection, query):
         cursor.execute(query)
         result = cursor.fetchall()
         return result
-    except Error as err:
+    except Exception as err:
         print(f"Error: '{err}'")
 
 def make_test_table(connection):
@@ -94,5 +94,5 @@ async def testdb(ctx, db_name):
         make_test_table(connection)
         print("test table created")
         await view_test_table(ctx, connection)
-    except Error as err:
+    except Exception as err:
         print(f"Error: '{err}'")
