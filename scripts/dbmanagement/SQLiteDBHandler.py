@@ -42,20 +42,18 @@ def read_query(query):
     except Exception as err:
         print(f"Error: '{err}'")
 
-def update_points(ctx, points_to_add):
+def update_points(userID, points_to_add):
+    """Updates the user's points in the DB. To get userID, try using ctx.message.author.id"""
     points_to_add = int(points_to_add)
-    user = str(ctx.message.author)
-    print(user)
     findUsers = """
-    SELECT User FROM UserStats;
+    SELECT ID FROM UserStats;
     """
     knownUsers = read_query(findUsers)      # returns as nested list
     knownUsers = chain.from_iterable(knownUsers)
-    print(knownUsers, user)
-    if user in knownUsers:
+    if userID in knownUsers:
         findPoints = f"""
         SELECT Points FROM UserStats
-        WHERE User = '{user}';
+        WHERE ID = {userID}
         """
         currentPoints = read_query(findPoints)
         # grab value from nested list
@@ -65,29 +63,27 @@ def update_points(ctx, points_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Points = {newPoints}
-        WHERE User = '{user}';
+        WHERE ID = {userID};
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{user}', {points_to_add}, 0);
+        ({userID}, {points_to_add}, 0);
         """
     execute_query(updateQuery)
 
-def update_gold(ctx, gold_to_add):
+def update_gold(userID, gold_to_add):
+    """Updates the user's gold in the DB. To get userID, try using ctx.message.author.id"""
     gold_to_add = int(gold_to_add)
-    user = str(ctx.message.author)
-    print(user)
     findUsers = """
-    SELECT User FROM UserStats;
+    SELECT ID FROM UserStats;
     """
     knownUsers = read_query(findUsers)      # returns as nested list
     knownUsers = chain.from_iterable(knownUsers)
-    print(knownUsers, user)
-    if user in knownUsers:
+    if userID in knownUsers:
         findGold = f"""
         SELECT Gold FROM UserStats
-        WHERE User = '{user}';
+        WHERE ID = {userID};
         """
         currentGold = read_query(findGold)
         # grab value from nested list
@@ -97,12 +93,12 @@ def update_gold(ctx, gold_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Gold = {newGold}
-        WHERE User = '{user}';
+        WHERE ID = {userID};
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{user}', 0, {gold_to_add});
+        ({userID}, 0, {gold_to_add});
         """
     execute_query(updateQuery)
 
@@ -114,11 +110,15 @@ async def view_stats(ctx):
     results = read_query(select_query)
 
     for result in results:
-        name, points, gold = result
-        await ctx.send(f"{name}\nPoints: {points}\nGold: {gold}")
+        ID, points, gold = result
+        member = await ctx.bot.fetch_user(ID)
+        print(member.name)
+        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
 
 async def test_points(ctx):
-    update_points(ctx, int(1))
+    userID = ctx.message.author.id
+    update_points(userID, int(1))
 
 async def test_gold(ctx):
-    update_gold(ctx, int(1))
+    userID = ctx.message.author.id
+    update_gold(userID, int(1))
