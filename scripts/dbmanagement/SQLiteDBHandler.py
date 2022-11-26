@@ -44,18 +44,17 @@ def read_query(query):
 
 def update_points(ctx, points_to_add):
     points_to_add = int(points_to_add)
-    user = str(ctx.message.author)
-    print(user)
+    username = str(ctx.message.author)
+    userID = str(ctx.message.author.id)
     findUsers = """
-    SELECT User FROM UserStats;
+    SELECT ID FROM UserStats;
     """
     knownUsers = read_query(findUsers)      # returns as nested list
     knownUsers = chain.from_iterable(knownUsers)
-    print(knownUsers, user)
-    if user in knownUsers:
+    if userID in knownUsers:
         findPoints = f"""
         SELECT Points FROM UserStats
-        WHERE User = '{user}';
+        WHERE ID = '{userID}'
         """
         currentPoints = read_query(findPoints)
         # grab value from nested list
@@ -65,29 +64,28 @@ def update_points(ctx, points_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Points = {newPoints}
-        WHERE User = '{user}';
+        WHERE ID = '{userID}';
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{user}', {points_to_add}, 0);
+        ('{userID}','{username}', {points_to_add}, 0);
         """
     execute_query(updateQuery)
 
 def update_gold(ctx, gold_to_add):
     gold_to_add = int(gold_to_add)
-    user = str(ctx.message.author)
-    print(user)
+    username = str(ctx.message.author)
+    userID = str(ctx.message.author.id)
     findUsers = """
-    SELECT User FROM UserStats;
+    SELECT ID FROM UserStats;
     """
     knownUsers = read_query(findUsers)      # returns as nested list
     knownUsers = chain.from_iterable(knownUsers)
-    print(knownUsers, user)
-    if user in knownUsers:
+    if userID in knownUsers:
         findGold = f"""
         SELECT Gold FROM UserStats
-        WHERE User = '{user}';
+        WHERE ID = '{userID}';
         """
         currentGold = read_query(findGold)
         # grab value from nested list
@@ -97,12 +95,12 @@ def update_gold(ctx, gold_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Gold = {newGold}
-        WHERE User = '{user}';
+        WHERE ID = '{userID}';
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{user}', 0, {gold_to_add});
+        ('{user}', '{username}', 0, {gold_to_add});
         """
     execute_query(updateQuery)
 
@@ -114,7 +112,7 @@ async def view_stats(ctx):
     results = read_query(select_query)
 
     for result in results:
-        name, points, gold = result
+        ID, name, points, gold = result
         await ctx.send(f"{name}\nPoints: {points}\nGold: {gold}")
 
 async def test_points(ctx):
