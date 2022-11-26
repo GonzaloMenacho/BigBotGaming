@@ -23,7 +23,7 @@ from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
-from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold
+from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold, get_stats
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 
@@ -124,6 +124,17 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
 @client.command(name="serverstats")
 async def on_serverstats(ctx):
     await view_stats(ctx)
+
+# displays a specific user's stats
+@client.command(name="stats", help="!stats @<User>")
+async def on_stats(ctx, userChecked: discord.Member):
+    await get_stats(ctx, userChecked)
+
+# displays the user's stats (overloaded command)
+@on_stats.error
+async def my_stats(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await get_stats(ctx, ctx.author)
 
 # gives points to the user
 @client.command(name="gibpoints")

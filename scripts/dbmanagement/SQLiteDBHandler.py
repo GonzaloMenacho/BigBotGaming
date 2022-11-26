@@ -42,15 +42,27 @@ def read_query(query):
     except Exception as err:
         print(f"Error: '{err}'")
 
-def update_points(userID, points_to_add):
-    """Updates the user's points in the DB. To get userID, try using ctx.message.author.id"""
-    points_to_add = int(points_to_add)
+def user_exists(userID):
+    """Checks if the user exists in the DB. If they don't, it puts them in """
     findUsers = """
     SELECT ID FROM UserStats;
     """
     knownUsers = read_query(findUsers)      # returns as nested list
     knownUsers = chain.from_iterable(knownUsers)
     if userID in knownUsers:
+        return True
+    else:
+        updateQuery = f"""
+        INSERT INTO UserStats VALUES
+        ({userID}, 0, 0);
+        """
+        execute_query(updateQuery)
+        return False
+
+def update_points(userID, points_to_add):
+    """Updates the user's points in the DB. To get userID, try using ctx.message.author.id"""
+    points_to_add = int(points_to_add)
+    if user_exists(userID):
         findPoints = f"""
         SELECT Points FROM UserStats
         WHERE ID = {userID}
@@ -75,12 +87,7 @@ def update_points(userID, points_to_add):
 def update_gold(userID, gold_to_add):
     """Updates the user's gold in the DB. To get userID, try using ctx.message.author.id"""
     gold_to_add = int(gold_to_add)
-    findUsers = """
-    SELECT ID FROM UserStats;
-    """
-    knownUsers = read_query(findUsers)      # returns as nested list
-    knownUsers = chain.from_iterable(knownUsers)
-    if userID in knownUsers:
+    if user_exists(userID):
         findGold = f"""
         SELECT Gold FROM UserStats
         WHERE ID = {userID};
@@ -102,18 +109,30 @@ def update_gold(userID, gold_to_add):
         """
     execute_query(updateQuery)
 
+async def print_full_tuples(ctx, results: str):
+    for result in results:
+        ID, points, gold = result
+        member = await ctx.bot.fetch_user(ID)
+        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
+
 async def view_stats(ctx):
     select_query = """
     SELECT * FROM UserStats;
     """
     
     results = read_query(select_query)
+    await print_full_tuples(ctx, results)
 
-    for result in results:
-        ID, points, gold = result
-        member = await ctx.bot.fetch_user(ID)
-        print(member.name)
-        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
+async def get_stats(ctx, user: discord.Member):
+    userID = user.id
+    user_exists(userID)
+
+    select_query = f"""
+    SELECT * FROM UserStats
+    WHERE ID = {userID};
+    """
+    result = read_query(select_query)
+    await print_full_tuples(ctx, result)
 
 async def test_points(ctx):
     userID = ctx.message.author.id
