@@ -43,6 +43,7 @@ def read_query(query):
         print(f"Error: '{err}'")
 
 def update_points(userID, points_to_add):
+    """Updates the user's points in the DB. To get userID, try using ctx.message.author.id"""
     points_to_add = int(points_to_add)
     findUsers = """
     SELECT ID FROM UserStats;
@@ -72,6 +73,7 @@ def update_points(userID, points_to_add):
     execute_query(updateQuery)
 
 def update_gold(userID, gold_to_add):
+    """Updates the user's gold in the DB. To get userID, try using ctx.message.author.id"""
     gold_to_add = int(gold_to_add)
     findUsers = """
     SELECT ID FROM UserStats;
