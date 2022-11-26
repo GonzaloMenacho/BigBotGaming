@@ -23,7 +23,7 @@ from scripts.Gif import playGif
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
-from scripts.dbmanagement.SQLServerConnect import testdb
+from scripts.dbmanagement.SQLiteDBHandler import testdb
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 

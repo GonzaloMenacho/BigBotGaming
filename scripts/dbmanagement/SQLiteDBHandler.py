@@ -46,7 +46,7 @@ def read_query(query):
 
 def make_test_table():
     create_test_table = """
-    CREATE TABLE UserStats (
+    CREATE TABLE Test (
       "User"	TEXT NOT NULL UNIQUE,
 	  "Points"	INTEGER,
       "Gold"    INTEGER,
@@ -54,7 +54,7 @@ def make_test_table():
       );
      """
     pop_test_table = """
-    INSERT INTO UserStats VALUES
+    INSERT INTO Test VALUES
     ('Player 3', 3, 30),
     ('Player 2', 2, 20),
     ('Player 1', 1, 10);
@@ -66,7 +66,7 @@ def make_test_table():
 
 async def view_test_table(ctx):
     select_query = """
-    SELECT * FROM UserStats;
+    SELECT * FROM Test;
     """
     
     results = read_query(select_query)
