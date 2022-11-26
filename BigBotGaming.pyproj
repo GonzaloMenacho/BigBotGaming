@@ -23,7 +23,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DiscordBotForGreenwell.py" />
     <Compile Include="scripts\dbmanagement\SQLServerConnect.py">
       <SubType>Code</SubType>
     </Compile>

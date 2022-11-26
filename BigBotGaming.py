@@ -16,7 +16,6 @@ import random
 import sys
 
 import scripts
-#import scripts.genericdiscordfunction
 
 from dotenv import load_dotenv
 
@@ -29,17 +28,6 @@ from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 
 load_dotenv()
-
-"""
-if os.path.exists(os.getcwd() + "/config.json"):
-    pass
-else:
-    configTemplate = {"Token": "",
-                      "Prefix": "g!"}
-
-    with open(os.getcwd() + "/config.json", "w+") as fs:
-        json.dump(configTemplate, fs)
-"""
 
 TOKEN = os.getenv('TOKEN')
 GUILD = os.getenv('GUILD')
@@ -69,22 +57,28 @@ async def on_ready():
 async def on_member_join(member: discord.Member=None):
     api_key = GIPHY_API
     api_instance = giphy_client.DefaultApi()
+
     # arguments for gifs_search_get
     q = 'welcome' 
     rating = 'g' # filters based on rating (g, pg, pg-13, r)
     limit = 10
     name = member.display_name
     channel = discord.utils.get(member.guild.text_channels, name="welcome")
+
     try:
         # searches all Giphy Gifs based on arguments above
         api_response = api_instance.gifs_search_get(api_key, q, limit=limit, rating=rating)
+
         # embeded bot response
         embed = discord.Embed(title=(f'Hi {name}! Welcome to the server.'),description="You are one of us now  \U0001f600.")
+
         # select random gif from list[Gif] and set as embeded image as the orignal image url from the Gif Object
         gifs = list(api_response.data)
         gif = random.choice(gifs)
         embed.set_image(url=gif.images.original.url)
+
         await channel.send(embed=embed)
+
     except ApiException as e:
         print("Exception when calling DefaultApi-'>gifs_search_get': %s\n" % e)
 
@@ -117,7 +111,7 @@ async def on_number_guesser(ctx):
     await playNumberGuesser(ctx, client)
 
 # connect four minigame
-@client.command(name="connect4")
+@client.command(name="connect4", help="!connect4 @<User>")
 async def on_connect_four(ctx, opponent: discord.Member):
     await playConnectFour(ctx, ctx.author, opponent)
 
@@ -132,7 +126,7 @@ async def on_dbconnect(ctx):
     await testdb(ctx, "test_db")
 
 # pass a topic and bot sends a randomized gif 
-@client.command(name="gif")
+@client.command(name="gif", help="!gif <search term>")
 async def on_gif(ctx,*,topic):
     await playGif(ctx,topic)
 
