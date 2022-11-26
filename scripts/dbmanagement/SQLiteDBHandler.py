@@ -11,7 +11,6 @@ from itertools import chain
 
 DBPASSWORD = os.getenv('DBPASSWORD')
 
-
 def connectDB():
     # connect to database
     connection = sqlite3.connect(r"scripts\dbmanagement\UserInfo.db")
@@ -106,25 +105,6 @@ def update_gold(ctx, gold_to_add):
         ('{user}', 0, {gold_to_add});
         """
     execute_query(updateQuery)
-
-def make_test_table():
-    create_test_table = """
-    CREATE TABLE Test (
-      "User"	TEXT NOT NULL UNIQUE,
-	  "Points"	INTEGER,
-      "Gold"    INTEGER,
-	  PRIMARY KEY("User")
-      );
-     """
-    pop_test_table = """
-    INSERT INTO Test VALUES
-    ('Player 3', 3, 30),
-    ('Player 2', 2, 20),
-    ('Player 1', 1, 10);
-    """
-
-    execute_query(create_test_table) # execute our defined query
-    execute_query(pop_test_table)
 
 async def view_stats(ctx):
     select_query = """
