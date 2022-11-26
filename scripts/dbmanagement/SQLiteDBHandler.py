@@ -44,8 +44,7 @@ def read_query(query):
 
 def update_points(ctx, points_to_add):
     points_to_add = int(points_to_add)
-    username = str(ctx.message.author)
-    userID = str(ctx.message.author.id)
+    userID = ctx.message.author.id
     findUsers = """
     SELECT ID FROM UserStats;
     """
@@ -54,7 +53,7 @@ def update_points(ctx, points_to_add):
     if userID in knownUsers:
         findPoints = f"""
         SELECT Points FROM UserStats
-        WHERE ID = '{userID}'
+        WHERE ID = {userID}
         """
         currentPoints = read_query(findPoints)
         # grab value from nested list
@@ -64,19 +63,18 @@ def update_points(ctx, points_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Points = {newPoints}
-        WHERE ID = '{userID}';
+        WHERE ID = {userID};
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{userID}','{username}', {points_to_add}, 0);
+        ({userID}, {points_to_add}, 0);
         """
     execute_query(updateQuery)
 
 def update_gold(ctx, gold_to_add):
     gold_to_add = int(gold_to_add)
-    username = str(ctx.message.author)
-    userID = str(ctx.message.author.id)
+    userID = ctx.message.author.id
     findUsers = """
     SELECT ID FROM UserStats;
     """
@@ -85,7 +83,7 @@ def update_gold(ctx, gold_to_add):
     if userID in knownUsers:
         findGold = f"""
         SELECT Gold FROM UserStats
-        WHERE ID = '{userID}';
+        WHERE ID = {userID};
         """
         currentGold = read_query(findGold)
         # grab value from nested list
@@ -95,12 +93,12 @@ def update_gold(ctx, gold_to_add):
         updateQuery = f"""
         UPDATE UserStats
         SET Gold = {newGold}
-        WHERE ID = '{userID}';
+        WHERE ID = {userID};
         """
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ('{user}', '{username}', 0, {gold_to_add});
+        ({userID}, 0, {gold_to_add});
         """
     execute_query(updateQuery)
 
@@ -112,8 +110,10 @@ async def view_stats(ctx):
     results = read_query(select_query)
 
     for result in results:
-        ID, name, points, gold = result
-        await ctx.send(f"{name}\nPoints: {points}\nGold: {gold}")
+        ID, points, gold = result
+        member = await ctx.bot.fetch_user(ID)
+        print(member.name)
+        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
 
 async def test_points(ctx):
     update_points(ctx, int(1))
