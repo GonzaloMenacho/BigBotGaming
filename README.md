@@ -5,7 +5,7 @@ This project is a multi-purpose Discord bot made for primarily for fun. The feat
 Currently, the bot has commands that: 
 - Pull posts from multiple different social media API's like Twitter, Reddit, and Giphy
 - Play through small minigames
-- Store minigame points and user information in a locally run MySQL database server
+- Store minigame points and user information in an SQLite db file
 - Send messages of randomly chosen quotes (i.e., bible verses)
 - Send welcome messages to new users
 - Send gifs based off of what users request
@@ -17,7 +17,8 @@ Commands:
 - !numberguess
 - !connect4
 - !reddit
-- !dbconnect
+- !serverstats
+- !stats
 - !gif
 - !bible
 - !DeepLeffen
@@ -31,6 +32,6 @@ In the future, we intend to expand upon these commands and add more minigames al
 
 ![image](https://user-images.githubusercontent.com/72235489/199866893-685e5a56-0c73-4ff5-b835-1df5381cf2a3.png)
 
-![image](https://user-images.githubusercontent.com/72235489/199866914-cf26ae0c-0564-48fe-b467-3d19fba44dbb.png)
+![image](https://user-images.githubusercontent.com/72235489/204071875-75c86147-95e9-4da8-b889-64f05e8bb68f.png)
 
 ![image](https://user-images.githubusercontent.com/72235489/199866922-f9650376-6d43-48cf-9eb5-ddb7a1e5593d.png)
