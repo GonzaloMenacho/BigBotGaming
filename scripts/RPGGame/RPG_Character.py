@@ -288,5 +288,12 @@ def get_character(discordid : int, charname : str):
         print(value)
 
 
+def print_char_stats(chardict : dict):
+    message = ""
+    for i in chardict:  # prints the dict in the file
+        message = "".join([message, f"{i}: {chardict[i]}\n"])
+    return message
+
+
 
 

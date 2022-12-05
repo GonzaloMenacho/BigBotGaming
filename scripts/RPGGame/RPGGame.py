@@ -43,7 +43,8 @@ Enter your option:
         #await rpg.send_message_in_thread(thread, "Hire Adventurer")
         await create_char(ctx, thread)
     elif message == "3":
-        await rpg.send_message_in_thread(thread, "View Adventurer Stats")
+        #await rpg.send_message_in_thread(thread, "View Adventurer Stats")
+        await print_chars_in_db(ctx, thread)
     elif message == "4":
         await rpg.send_message_in_thread(thread, "Guild Promotion")
     elif message == "5":
@@ -64,3 +65,23 @@ Enter your option:
 async def create_char(ctx: ctxt, thread : discord.Thread):
     message = await rpgc.initialize_char(ctx, thread)
     await rpg.send_message_in_thread(thread, message)
+
+
+async def print_chars_in_db(ctx: ctxt, thread : discord.Thread):
+    characterlist = await rpg.get_all_chars_from_db(ctx, thread)
+
+    print(characterlist[0])
+    charselect = await rpg.wait_for_message_in_channel(ctx, thread)
+    try:
+        select = int(charselect)-1
+        if select == -1:
+            message = 'Returning to Main Menu'
+        if select < len(characterlist) and select > 0:
+            print(characterlist[select])
+            message = rpgc.print_char_stats(characterlist[select])
+        else:
+            message = 'Not a valid character. Return to Main Menu.'
+        await rpg.send_message_in_thread(thread, message)
+    except:
+        message = 'Unknown Input. Returning to Main Menu.'
+        await rpg.send_message_in_thread(thread, message)

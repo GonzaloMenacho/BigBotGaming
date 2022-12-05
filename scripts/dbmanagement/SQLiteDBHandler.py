@@ -136,8 +136,8 @@ async def get_stats(ctx, user: discord.Member):
 
 
 def get_character_from_db(discordid : int, charname = None) -> list:
-    if (discordid is None or charname is None):
-        print("bad discordid or charname")
+    if (discordid is None):
+        print("bad discordID")
         return
     findChar = f"""
     SELECT * FROM Characters

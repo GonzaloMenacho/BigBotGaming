@@ -3,6 +3,13 @@ import discord
 import re
 import asyncio
 
+#because python imports suck
+from pathlib import Path
+import sys
+path = str(Path(Path(__file__).parent.absolute()).parent.absolute())
+sys.path.insert(0, path)
+from dbmanagement import SQLiteDBHandler as db
+
 
 async def set_up_game_channel(ctx: ctxt):
     discorduser = ctx.message.author
@@ -81,3 +88,69 @@ Creates starting dictionary values for gamestate file.
     }
 
     return player_dict
+
+
+async def get_all_chars_from_db(ctx : ctxt, thread : discord.Thread):
+    characterlist = db.get_character_from_db(ctx.message.author.id)
+    print(characterlist)
+    message = ""
+    chardicts = []
+    for x in range(len(characterlist)):
+        char_dict = convert_char_tuple_to_dict(characterlist[x])
+        chardicts.append(char_dict)
+        message = "".join([message, f"{x+1}: {char_dict['name']}\n"])
+    await send_message_in_thread(thread, message)
+    return chardicts
+
+
+def convert_char_tuple_to_dict(chartuple : tuple) -> dict:
+    dictkeys = ("id",
+                "discordid",
+                 "name",
+                 "level",
+                 "exp",
+                 "hp",
+                 "mp",
+                 "strength",
+                 "dexterity",
+                 "vitality",
+                 "magic",
+                 "spirit",
+                 "luck",
+                 "weapon",
+                 "skill_type",
+                 "skill_1",
+                 "skill_2",
+                 "skill_3",
+                 "skill_4",
+                 "skill_5",
+                )
+    tempchardict = {}
+    for x in range(20):
+        tempchardict[dictkeys[x]] = chartuple[x]
+
+    skills = [
+        tempchardict['skill_1'],
+        tempchardict['skill_2'],
+        tempchardict['skill_3'],
+        tempchardict['skill_4'],
+        tempchardict['skill_5'],
+        ]
+
+    chardict = {
+            "name": tempchardict['name'],
+            "level": tempchardict['level'],
+            "exp": tempchardict['exp'],
+            "hp": tempchardict['hp'],
+            "mp": tempchardict['mp'],
+            "strength": tempchardict['strength'],
+            "dexterity": tempchardict['dexterity'],
+            "vitality": tempchardict['vitality'],
+            "magic": tempchardict['magic'],
+            "spirit": tempchardict['spirit'],
+            "luck": tempchardict['luck'],
+            "weapon": tempchardict['weapon'],
+            "skill_type": tempchardict['skill_type'],
+            "skills": skills,
+        }
+    return chardict
