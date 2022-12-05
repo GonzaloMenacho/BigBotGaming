@@ -26,6 +26,7 @@ from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold, get_stats
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
+from scripts.minigames.RPGGame.RPGGame import playRPG
 
 load_dotenv()
 
@@ -160,5 +161,10 @@ async def on_bible(ctx):
 @client.command(name="DeepLeffen")
 async def on_DeepLeffen(ctx):
     await grab_latest_tweet(ctx)
+
+
+@client.command(name="RPG")
+async def on_RPG(ctx):
+    await playRPG(ctx)
 
 client.run(TOKEN)
