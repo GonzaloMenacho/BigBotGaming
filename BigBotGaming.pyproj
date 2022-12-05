@@ -13,6 +13,7 @@
     <Name>BigBotGaming</Name>
     <RootNamespace>DiscordBotForGreenwell</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>Global|PythonCore|3.9</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,12 +24,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BigBotGaming.py" />
     <Compile Include="scripts\dbmanagement\SQLiteDBHandler.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="scripts\genericdiscordfunction.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="scripts\Gif.py" />
     <Compile Include="scripts\minigames\ConnectFour.py">
       <SubType>Code</SubType>
     </Compile>
@@ -38,6 +41,12 @@
     <Compile Include="scripts\minigames\RedditPull.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="scripts\minigames\RPGGame\RPGBattle.py" />
+    <Compile Include="scripts\minigames\RPGGame\RPGGame.py" />
+    <Compile Include="scripts\minigames\RPGGame\RPGSim.py" />
+    <Compile Include="scripts\minigames\RPGGame\RPG_Character.py" />
+    <Compile Include="scripts\minigames\RPGGame\RPG_GameHelper.py" />
+    <Compile Include="scripts\tweet.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="doc\" />
@@ -45,8 +54,19 @@
     <Folder Include="lib\" />
     <Folder Include="scripts\minigames\" />
     <Folder Include="scripts\dbmanagement\" />
+    <Folder Include="scripts\minigames\RPGGame\" />
+    <Folder Include="scripts\minigames\RPGGame\__pycache__\" />
     <Folder Include="tests\" />
     <Folder Include="scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
+    <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
+    <Content Include="scripts\minigames\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />
+    <Content Include="scripts\minigames\RPGGame\__pycache__\__init__.cpython-39.pyc" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.9" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
