@@ -1,17 +1,12 @@
-
-import random
-import json
-import os
-import time
 import discord.ext.commands.context as ctxt
 import discord
 import re
 import asyncio
-
-current_users = set()
+from RPGGameLoop import play_RPG_game_loop
 
 async def playRPG(ctx : ctxt):
     thread = await set_up_game_channel(ctx)
+    #await play_RPG_game_loop(ctx, thread)
     await wait_for_message_in_channel(ctx, thread)
 
 
@@ -71,15 +66,11 @@ async def wait_for_message_in_channel(ctx, thread : discord.TextChannel):
         message = await ctx.bot.wait_for("message", timeout = 15.0, check=check)
         await thread.send(message.content)
     except asyncio.TimeoutError:
-        await thread.send("Your time is up")
+        await thread.send("Your time is up.")
 
 
 async def send_message_in_thread(channel : discord.TextChannel, message):
     await channel.send(message)
-
-
-def add_user_to_playing_list(ctx):
-    pass
 
 
 async def initialize_character():
