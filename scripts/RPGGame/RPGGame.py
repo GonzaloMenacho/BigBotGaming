@@ -3,6 +3,7 @@ import discord.ext.commands.context as ctxt
 import sys
 import asyncio
 from . import RPG_GameHelper as rpg
+from . import RPG_Character as rpgc
 
 async def playRPG(ctx : ctxt):
     thread = await rpg.set_up_game_channel(ctx)
@@ -13,6 +14,7 @@ async def playRPG(ctx : ctxt):
 
 
 async def play_RPG_game_loop(ctx : ctxt, thread : discord.Thread):
+    #rpgc.get_character(ctx.message.author.id, "China")
     gameloop = True
     while(gameloop):
         gameloop = await play_main_menu(ctx, thread)
@@ -38,7 +40,8 @@ Enter your option:
     if message == "1":
         await rpg.send_message_in_thread(thread, "Send Adventuring Party")
     elif message == "2":
-        await rpg.send_message_in_thread(thread, "Hire Adventurer")
+        #await rpg.send_message_in_thread(thread, "Hire Adventurer")
+        await create_char(ctx, thread)
     elif message == "3":
         await rpg.send_message_in_thread(thread, "View Adventurer Stats")
     elif message == "4":
@@ -49,10 +52,15 @@ Enter your option:
         await rpg.send_message_in_thread(thread, "Kill")
     elif message == "r":
         await rpg.send_message_in_thread(thread, "Initialize")
-    elif message == "0":
+    elif message == "0" or message == -1:
         await rpg.send_message_in_thread(thread, "Close Program")
         return False
     else:
         await rpg.send_message_in_thread(thread, "Unknown Input!")
 
     return True
+
+
+async def create_char(ctx: ctxt, thread : discord.Thread):
+    message = await rpgc.initialize_char(ctx, thread)
+    await rpg.send_message_in_thread(thread, message)

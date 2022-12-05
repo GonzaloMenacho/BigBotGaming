@@ -26,7 +26,7 @@ from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold, get_stats
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
-from scripts.minigames.RPGGame.RPGGame import playRPG
+from scripts.RPGGame.RPGGame import playRPG
 
 load_dotenv()
 

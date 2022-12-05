@@ -28,6 +28,9 @@
     <Compile Include="scripts\dbmanagement\SQLiteDBHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="scripts\dbmanagement\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="scripts\genericdiscordfunction.py">
       <SubType>Code</SubType>
     </Compile>
@@ -46,6 +49,17 @@
     <Compile Include="scripts\minigames\RPGGame\RPGSim.py" />
     <Compile Include="scripts\minigames\RPGGame\RPG_Character.py" />
     <Compile Include="scripts\minigames\RPGGame\RPG_GameHelper.py" />
+    <Compile Include="scripts\minigames\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="scripts\RPGGame\RPGBattle.py" />
+    <Compile Include="scripts\RPGGame\RPGGame.py" />
+    <Compile Include="scripts\RPGGame\RPGSim.py" />
+    <Compile Include="scripts\RPGGame\RPG_Character.py" />
+    <Compile Include="scripts\RPGGame\RPG_GameHelper.py" />
+    <Compile Include="scripts\RPGGame\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="scripts\tweet.py" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +70,8 @@
     <Folder Include="scripts\dbmanagement\" />
     <Folder Include="scripts\minigames\RPGGame\" />
     <Folder Include="scripts\minigames\RPGGame\__pycache__\" />
+    <Folder Include="scripts\RPGGame\" />
+    <Folder Include="scripts\RPGGame\__pycache__\" />
     <Folder Include="tests\" />
     <Folder Include="scripts\" />
   </ItemGroup>
@@ -63,7 +79,10 @@
     <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
     <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
     <Content Include="scripts\minigames\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />
-    <Content Include="scripts\minigames\RPGGame\__pycache__\__init__.cpython-39.pyc" />
+    <Content Include="scripts\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
+    <Content Include="scripts\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
+    <Content Include="scripts\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />
+    <Content Include="scripts\RPGGame\__pycache__\__init__.cpython-39.pyc" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

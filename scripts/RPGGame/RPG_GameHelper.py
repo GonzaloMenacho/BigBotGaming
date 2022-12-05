@@ -63,12 +63,21 @@ async def wait_for_message_in_channel(ctx,
         return message.content
     except asyncio.TimeoutError:
         await thread.send("Your time is up.")
-        return "0"
+        return -1
 
 
 async def send_message_in_thread(channel : discord.TextChannel, message):
     await channel.send(message)
 
+def create_player_stats():
+    """
+Creates starting dictionary values for gamestate file.
+    :return: player stats dictionary
+    """
+    player_dict = {
+        "level": 1,
+        "exp": 0,
+        "gold": 300
+    }
 
-async def initialize_character():
-    pass
+    return player_dict
