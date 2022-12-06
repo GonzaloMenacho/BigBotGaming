@@ -36,6 +36,7 @@ A script where you can send your party into battle.
             if agreement == "y":
                 message = f"BATTLE!"
                 await rpg. send_message_in_thread(thread, message)
+                time.sleep(3)
                 await rpgbh.start_battle(ctx, thread, char1, char2, char3, location)
                 message = f"The battle has ended. Returning to Main Menu."
             else:

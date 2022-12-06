@@ -18,7 +18,7 @@ selected location.
     :param location: chosen location from location list
     """
     enemy = generate_enemy(location)
-    message = f"The party encountered a {enemy['name']}!\n The {enemy['name']} has {enemy['hp']} HP."
+    message = f"The party encountered a {enemy['name']}!\n The {enemy['name']} has {enemy['hp']} HP. :blue_heart:"
     await rpg.send_message_in_thread(thread, message)
     #print("\nThe party encountered a ", enemy["name"], "!", sep='')
     time.sleep(3)
@@ -48,8 +48,9 @@ selected location.
             #print(attacker['name'], " performs an attack on ",
                   #defender['name'], "!", sep='')
         elif action == "Skill":
+            these_skills = [i for i in attacker['skills'] if i is not None]
             message = "".join([message, 
-                               f"{battle_list[x]['name']} uses {random.choice(attacker['skills'])} on {defender['name']}!\n"])
+                               f"{battle_list[x]['name']} uses {random.choice(these_skills)} on {defender['name']}!\n"])
             #print(battle_list[x]['name'], " uses ",
                  # random.choice(attacker["skills"]), " on ",
                   #defender['name'], "!", sep='')
@@ -61,13 +62,13 @@ selected location.
         message = "".join([message, actionmessage])
         defender["hp"] -= attack_damage
         message = "".join([message, 
-                           f"{defender['name']} is at {defender['hp']} HP!"])
+                           f"{defender['name']} is at {defender['hp']} HP! :heart:"])
         #print(defender["name"], " is at ", defender["hp"], " HP!", sep='')
         #print()
 
         # checks if dead guy is ally or enemy, then cues respective scene
         await rpg.send_message_in_thread(thread, message)
-        time.sleep(4)
+        time.sleep(5)
 
         if defender["hp"] <= 0:
             defender_team = await check_defender_team(thread, defender, party_list)
@@ -92,37 +93,39 @@ Generates enemy used for battle.
     """
     enemy_list = []
     if location == "Flowering Plains":
-        enemies = ["Slime", "Cursed Cornstalk", "Buzzy Bee", "Feral Mutt"]
+        enemies = ["Slime", "Cursed Cornstalker", "Buzzy Bee", "Feral Mutt", "Werecrow", "The Walking Bread",
+                   "Only Hawk", "Truant Tree-Ants"]
         lv = 1
     elif location == "Misty Rainforest":
-        enemies = ["Slime", "Cain Toad", "Vociferous Viper", "Crocodire"]
+        enemies = ["Slime", "Cain Toad", "Vociferous Viper", "Crocodire", "The Froge", "Silver-Toungued Basilisk",
+                   "Young Gator"]
         lv = 2
     elif location == "Graven Marsh":
-        enemies = ["Slime", "Wild Roots", "Pecking Vulture", "Breaking Bat"]
+        enemies = ["Slime", "Wild Roots", "Pecking Vulture", "Breaking Bat", "Bitter-Cold Slaw"]
         lv = 3
     elif location == "Bellowing Mountains":
-        enemies = ["Slime", "Billy Goat", "Mountain Ape", "Laughing Lion"]
+        enemies = ["Slime", "Billy Goat", "Mountain Ape", "Laughing Lion", "Bitter-Cold Slaw", "Lesser Salamander"]
         lv = 4
     elif location == "Cryptic Caverns":
-        enemies = ["Cryptic Slime", "Walking Dead", "Ghast", "Spider Monkey",
+        enemies = ["Cryptic Slime", "Walking Dead", "Ghast", "Spider Monkey", "Nutty-Putty Craven",
                    "????"]
         lv = 5
     elif location == "Ancient Spire":
-        enemies = ["Slime Knight", "Haunted Armor", "Kobold Squadron",
+        enemies = ["Slime Knight", "Haunted Armor", "Kobold Squadron", "Bitter-Cold Slaw",
                    "Rock Solid"]
         lv = 6
     elif location == "Cloudy Peaks":
-        enemies = ["Liquid Slime", "Gilded Goose", "Dragon Hatchling",
+        enemies = ["Liquid Slime", "Gilded Goose", "Dragon Hatchling", "Fire Giant",
                    "Mountain Giant"]
         lv = 7
     elif location == "Canada":
-        enemies = ["Canadian Slime", "Dire Wolf", "Friendless Citizen", "Pal"]
+        enemies = ["Canadian Slime", "Dire Wolf", "Friendly Citizen", "Pal", "Justin Trudeau"]
         lv = 8
     elif location == "Volcanic Isles":
-        enemies = ["Flaming Slime", "Lava Golem", "Dancing Devil"]
+        enemies = ["Lava Slime", "Lava Golem", "Dancing Devil", "Greater Salamander", "Young Adult Dragon"]
         lv = 9
     elif location == "Desolate Wasteland":
-        enemies = ["Metal Slime", "Fallout Zombie Hoard", "Dragon Remains",
+        enemies = ["Metal Slime", "Zombie Hoard", "Dragon Remains", "Territorial Rotbart", "????!"
                    "Roaming Gargantuan"]
         lv = 10
     else:
@@ -147,11 +150,11 @@ dictionary.
     hp = random.randrange((2 ** lv) + (lv * 15),
                           ((2 ** lv) * 2) + (lv * 15)) + (20 * lv)
     mp = random.randrange((2 ** lv) + (lv * 10), ((2 ** lv) * 2) + (lv * 10))
-    strength = random.randrange(3 * lv, 4 * lv) + 8 + lv
-    dexterity = random.randrange(3 * lv, 4 * lv) + 8 + lv
-    vitality = random.randrange(3 * lv, 4 * lv) + 8 + lv
-    magic = random.randrange(3 * lv, 4 * lv) + 8 + lv
-    spirit = random.randrange(3 * lv, 4 * lv) + 8 + lv
+    strength = random.randrange(3 * lv, 5 * lv) + 8 + lv
+    dexterity = random.randrange(3 * lv, 5 * lv) + 8 + lv
+    vitality = random.randrange(3 * lv, 5 * lv) + 8 + lv
+    magic = random.randrange(3 * lv, 5 * lv) + 8 + lv
+    spirit = random.randrange(3 * lv, 5 * lv) + 8 + lv
     luck = random.randrange(1, 4)
     skill_type = random.choice(["melee", "ranged", "magic"])
     money = random.randrange((2 ** lv) + (lv * 5), ((2 ** lv) * 2) + (lv * 5))
@@ -223,7 +226,8 @@ Determine what effect happens when action takes place.
                                          defender["vitality"],
                                          defender["spirit"],
                                          defender["luck"])
-        print("The ", action, " does ", damage, " damage!", sep='')
+        #print("The ", action, " does ", damage, " damage!", sep='')
+        message = f"The {action} does {damage} damage! :broken_heart:\n"
     elif action == "Skill" and hit_roll is not False:
         base_damage, attackmessage = calculate_attack_damage(attacker["level"],
                                               attacker["skill_type"],
@@ -235,7 +239,7 @@ Determine what effect happens when action takes place.
                                               defender["luck"])
         damage_mod = random.randrange(2, 5) / 2  # multiplies damage by mod
         damage = round(base_damage * damage_mod)
-        message = f"The {action} does {damage} damage!\n"
+        message = f"The {action} does {damage} damage! :broken_heart:\n"
         #print("The ", action, " does ", damage, " damage!", sep='')
     else:
         message = f"The {action} missed!\n"
@@ -304,7 +308,7 @@ Calculates attack damage from given attacker and defender parameters.
 
     if random_critical <= critical_hit:
         damage *= 3
-        message = ("Critical Hit!! Critical Hit!!\n")
+        message = (":clap::exclamation: Critical Hit!! Critical Hit!! :exclamation::clap:\n")
         #print("Critical Hit!!" * 2)
         #time.sleep(2)
     else:
@@ -343,14 +347,19 @@ Runs script when enemy is killed in battle.
     :param char2: char 2 dict
     :param char3:  char 3 dict
     """
-    print("\nThe victorious adventurers return to the guild with their heads\n"
-          "held high. The trip proved successful thanks to your great \n"
-          "thinking. The odds of battle proved to be no better than your \n"
-          "party's teamwork and your planning. Well done, guild master.\n")
+    message = "The victorious adventurers return to the guild with their heads held high.\n"
+    message = "".join([message, "The battle proved successful thanks to your leadership.\n"])
+    message = "".join([message, "Well done, guild master."])
+    time.sleep(2)
+    await rpg.send_message_in_thread(thread, message)
     time.sleep(4)
     player_dict = await rpg.get_player_stats(ctx)
     player_dict["gold"] += defender["money"]
     player_dict["exp"] += defender["exp"]
+
+    message = f"You gained {defender['money']} gold and {defender['exp']} experience!"
+    await rpg.send_message_in_thread(thread, message)
+    time.sleep(3)
 
     # Does the Guild level up?
     level = rpgb.level_up_guild(player_dict)
@@ -360,10 +369,6 @@ Runs script when enemy is killed in battle.
     #time.sleep(2)
     rpgc.save_player_data(player_dict)
 
-    # Update char exp, and check for level up
-    #file1 = get_stats(char1["name"])
-    #file2 = get_stats(char2["name"])
-    #file3 = get_stats(char3["name"])
     char1["exp"] += defender["exp"] * 2
     char2["exp"] += defender["exp"] * 2
     char3["exp"] += defender["exp"] * 2
@@ -390,12 +395,6 @@ async def cue_party_member_death(ctx, thread, defender):
 May the dead rest in peace.
     :param defender: you let this happen
     """
-    print("\nThe adventurers return to the guild, defeated, and with one "
-          "less \nmember in tow. Their inadequacy and your lack of judgement "
-          "has \nled to one of your guild members perishing. The dead won't "
-          "be \nreturning anytime soon, so don't expect to come across",
-          defender["name"], "\nagain. Reflect, and don't make the same "
-                            "mistake next time.")
     message = f"""
     The adventurers return to the guild, defeated, and with one less member in tow.
     """
@@ -413,4 +412,10 @@ May the dead rest in peace.
     """
     await rpg.send_message_in_thread(thread, message)
     time.sleep(3)
+
+    message = f"""
+    :skull:
+    """
+    await rpg.send_message_in_thread(thread, message)
+    time.sleep(5)
     rpgc.kill_char(ctx, defender)

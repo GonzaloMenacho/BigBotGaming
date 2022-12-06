@@ -137,7 +137,7 @@ Rolls stats and adds them to chosen filename's dictionary
     }
     char_dict.update(char_dict_updated)
     save_char_data(ctx, char_dict)
-    message = f"{char_dict['name']} has been successfully promoted to level {char_dict['level']}!"
+    message = f"{char_dict['name']} has been successfully promoted to level {char_dict['level']}! :bulb:"
     return message
 
 
