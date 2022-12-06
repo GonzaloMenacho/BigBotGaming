@@ -52,7 +52,7 @@
     <Compile Include="scripts\minigames\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="scripts\RPGGame\RPGBattle.py" />
+    <Compile Include="scripts\RPGGame\RPG_Battle.py" />
     <Compile Include="scripts\RPGGame\RPGGame.py" />
     <Compile Include="scripts\RPGGame\RPGSim.py" />
     <Compile Include="scripts\RPGGame\RPG_Character.py" />

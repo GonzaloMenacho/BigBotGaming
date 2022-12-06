@@ -77,23 +77,9 @@ async def wait_for_message_in_channel(ctx,
 async def send_message_in_thread(channel : discord.TextChannel, message):
     await channel.send(message)
 
-"""
-def create_player_stats():
-
-Creates starting dictionary values for gamestate file.
-    :return: player stats dictionary
-
-    player_dict = {
-        "level": 1,
-        "exp": 0,
-        "gold": 300
-    }
-
-    return player_dict
-"""
 
 async def get_player_stats(ctx: ctxt) -> dict:
-    result = await db.get_my_stats(ctx, ctx.message.author)
+    result = await db.get_my_stats(ctx)
     dictkeys = ("id", "points", "gold", "level", "exp")
     playerdict = {}
     for item in result:
@@ -126,7 +112,7 @@ async def get_character_choice_from_index(characterlist : list, charselect):
         if (select < len(characterlist)) and (select >= 0):
             return select
         else:
-            print(select)
+            #print(select)
             return
     except:
         return

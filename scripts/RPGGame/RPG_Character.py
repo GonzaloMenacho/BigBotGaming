@@ -19,16 +19,16 @@ Rolls a bunch of stats using roll_stats() and roll_skills()
 and saves values to a dictionary, and character file.
     """
     name = await rpg.wait_for_message_in_channel(ctx, thread, "What's the name of the scouted adventurer? :")
-    print(name)
+    #print(name)
     if name == -1:
         return -1
 
     if not check_name_characters(name):
         return "This name is invalid!"
-    print(name)
+    #print(name)
 
     dbcheck = db.get_character_from_db(ctx.message.author.id, name)
-    print(dbcheck)
+    #print(dbcheck)
     if len(dbcheck) != 0:
         return "This person is already a registered adventurer!"
     else:
@@ -57,8 +57,8 @@ and saves values to a dictionary, and character file.
             "skills": skills,
         }
 
-        print(stat_dict)
-        print(stat_dict['name'])
+        #print(stat_dict)
+        #print(stat_dict['name'])
         message = save_char_data(ctx, stat_dict)
         print(message)
         return message
@@ -69,14 +69,6 @@ def check_name_characters(name):
     Checks if filename is valid.
     :param name: name
     :return: better name
-    """
-    """
-
-    ACCESS DATABASE
-    GET ALL CHARACTERS WITH THE DISCORD'S ID
-    SEE IF ANY OF THOSE ROWS HAVE THE SAME NAME
-
-
     """
     name = name.replace(" ", "A")  # allows spaces...
     if name == "" or name.lower() == "null":
@@ -129,7 +121,7 @@ Rolls stats and adds them to chosen filename's dictionary
     :param file_select: name of file dictionary
     """
     stat_list = roll_stats(char_dict["level"])
-    roll_skills(char_dict['level'], char_dict['skill_type'],
+    skill_list = roll_skills(char_dict['level'], char_dict['skill_type'],
                 char_dict['skills'])
 
     char_dict_updated = {
@@ -142,8 +134,8 @@ Rolls stats and adds them to chosen filename's dictionary
         'vitality': char_dict['vitality'] + stat_list[4],
         'magic': char_dict['magic'] + stat_list[5],
         'spirit': char_dict['spirit'] + stat_list[6],
+        'skills' : skill_list
     }
-
     char_dict.update(char_dict_updated)
     save_char_data(ctx, char_dict)
     message = f"{char_dict['name']} has been successfully promoted to level {char_dict['level']}!"
@@ -210,13 +202,12 @@ For existing char, rolls a stat, and appends to existing skill list.
     :return: skills as list
     """
     skill_list = determine_skill_list(skill_type)
-
     if lv == 1:
         for x in range(2):
             skills[x] = random.choice(skill_list)
             skill_list.remove(skills[x])
     elif lv % 5 == 0 and lv <= 16:
-        for x in range(skills):
+        for x in range(len(skills)):
             if skills[x] == None:
                 skills[x] = random.choice(skill_list)
                 break
@@ -284,7 +275,3 @@ def print_char_stats(chardict : dict):
     for i in chardict:  # prints the dict in the file
         message = "".join([message, f"{i}: {chardict[i]}\n"])
     return message
-
-
-
-

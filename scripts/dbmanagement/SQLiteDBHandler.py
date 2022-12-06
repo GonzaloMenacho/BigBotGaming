@@ -113,7 +113,9 @@ def update_gold(userID, gold_to_add):
         """
     execute_query(updateQuery)
 
-
+"""
+MAKE SURE THE TABLE ONLY HAS LEGITIMATE USERS IN IT
+"""
 async def print_full_tuples(ctx, results: str):
     for result in results:
         ID, points, gold, level, exp = result
@@ -163,16 +165,19 @@ def get_character_from_db(discordid : int, charname = None) -> list:
 def save_character_into_db(discordid : int, stat_dict : dict) -> list:
     if (discordid is None or stat_dict is None):
         return
-    try:
-        name = stat_dict['name']
-    except:
-        return
+
+    name = f"{stat_dict['name']}"
     query = f"""
     SELECT * FROM Characters
     WHERE discordID = {discordid}
-    AND name = '{stat_dict['name']}';
+    AND name = '{name}';
     """
-    if read_query(query) is not None:
+    if len(read_query(query)) > 0:
+        skill_1 = f"'{stat_dict['skills'][0]}'" if stat_dict['skills'][0] is not None else 'NULL'
+        skill_2 = f"'{stat_dict['skills'][1]}'" if stat_dict['skills'][1] is not None else 'NULL'
+        skill_3 = f"'{stat_dict['skills'][2]}'" if stat_dict['skills'][2] is not None else 'NULL'
+        skill_4 = f"'{stat_dict['skills'][3]}'" if stat_dict['skills'][3] is not None else 'NULL'
+        skill_5 = f"'{stat_dict['skills'][4]}'" if stat_dict['skills'][4] is not None else 'NULL'
         query = f"""
         UPDATE Characters
         SET level = {stat_dict['level']},
@@ -183,7 +188,12 @@ def save_character_into_db(discordid : int, stat_dict : dict) -> list:
             dexterity = {stat_dict['dexterity']},
             vitality = {stat_dict['vitality']},
             magic = {stat_dict['magic']},
-            spirit = {stat_dict['spirit']}
+            spirit = {stat_dict['spirit']},
+            skill_1 = {skill_1},
+            skill_2 = {skill_2},
+            skill_3 = {skill_3},
+            skill_4 = {skill_4},
+            skill_5 = {skill_5}
         WHERE discordID = {discordid}
         AND name = '{stat_dict['name']}';
         """
@@ -195,7 +205,7 @@ def save_character_into_db(discordid : int, stat_dict : dict) -> list:
         skill_3 = f"'{stat_dict['skills'][2]}'" if stat_dict['skills'][2] is not None else 'NULL'
         skill_4 = f"'{stat_dict['skills'][3]}'" if stat_dict['skills'][3] is not None else 'NULL'
         skill_5 = f"'{stat_dict['skills'][4]}'" if stat_dict['skills'][4] is not None else 'NULL'
-        print(skill_1, skill_2, skill_3, skill_4, skill_5)
+        #print(skill_1, skill_2, skill_3, skill_4, skill_5)
         query = f"""
         INSERT INTO Characters (
             ID,
@@ -263,11 +273,11 @@ def update_user_info(player_dict : dict):
     execute_query(query)
 
 
-async def get_my_stats(ctx, user: discord.Member):
-    user_exists(user.id)
+async def get_my_stats(ctx):
+    user_exists(ctx.message.author.id)
     select_query = f"""
     SELECT * FROM UserStats
-    WHERE ID = {user.id};
+    WHERE ID = {ctx.message.author.id};
     """
     result = read_query(select_query)
     return result
