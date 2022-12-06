@@ -87,44 +87,47 @@ def check_name_characters(name):
         return False
 
 
-def level_up_from_menu():
+async def level_up_from_menu(ctx, thread):
     """
 Takes character file, rolls stats, changes file dictionary, and saves file.
     """
-    try:
-        player_dict = get_stats("gamestate")
-        if player_dict["gold"] < 100:  # checks player file's gold value
-            print("It takes 100 gold to level up a character! \nCome back "
-                  "when you're a bit... mmmh... richer!")
-            return False
-        else:
-            pass
-        prompt = "It costs 100 gold to level up a character. \nYou have " + \
-                 str(player_dict["gold"]) + " gold. \nWho would you like to " \
-                                            "level up? :"
-        char_list = get_char_list()
-        file_select = select_file(char_list, prompt)
-        if not char_list:
-            print(
-                "You don't have any adventurers to promote! \nReturning to "
-                "Main Menu... ")
-        elif not file_select:
-            print("Returning to Main Menu... ")
-        else:
-            player_dict["gold"] -= 100
-            save_char_data(player_dict, "gamestate")
-            level_up_stats(file_select)
-    except FileNotFoundError:
-        print('\nThe \\characterFiles folder was not found! \nPlease '
-              'initialize the game by pressing "r" on the Main Menu!\n')
+    player_dict = await rpg.get_player_stats(ctx)
+
+    if player_dict["gold"] < 100:  # checks player file's gold value
+        message = "It takes 100 gold to level up a character! \nCome back when you're a bit... mmmh... richer!"
+        await rpg.send_message_in_thread(thread, message)
+        return False
+
+    char_list = await rpg.get_all_chars_from_db(ctx, thread)
+    if len(char_list) == 0:
+        message = "You don't have any adventurers to promote!"
+        await rpg.send_message_in_thread(thread, message)
+        return message
+    
+    message = f"""
+    It costs 100 gold to level up a character.
+    You have {player_dict['gold']} gold.
+    Who would you like to level up?\n
+    """
+    charselect = await rpg.wait_for_message_in_channel(ctx, thread, message)
+    charindex = await rpg.get_character_choice_from_index(char_list, charselect)
+    if charindex == -1:
+        message = "Returning to Main Menu."
+    if charindex is None:
+        message = "Returning to Main Menu."
+    else:
+        character = char_list[charindex]
+        player_dict["gold"] -= 100
+        save_player_data(player_dict)
+        message = level_up_stats(ctx, character)
+    await rpg.send_message_in_thread(thread, message)
 
 
-def level_up_stats(file_select):
+def level_up_stats(ctx : ctxt, char_dict : dict):
     """
 Rolls stats and adds them to chosen filename's dictionary
     :param file_select: name of file dictionary
     """
-    char_dict = get_stats(file_select)
     stat_list = roll_stats(char_dict["level"])
     roll_skills(char_dict['level'], char_dict['skill_type'],
                 char_dict['skills'])
@@ -142,9 +145,9 @@ Rolls stats and adds them to chosen filename's dictionary
     }
 
     char_dict.update(char_dict_updated)
-    save_char_data(char_dict, char_dict['name'])
-    print(char_dict['name'], " has been successfully promoted to level ",
-          char_dict['level'], "!", sep='')
+    save_char_data(ctx, char_dict)
+    message = f"{char_dict['name']} has been successfully promoted to level {char_dict['level']}!"
+    return message
 
 
 def roll_stats(lv):
@@ -249,20 +252,8 @@ Prints skills available, determined by skill_type.
     return skill_list
 
 
-def get_stats(char_select):
-    """
-Outputs chosen character file as dictionary
-    :param char_select: name grabbed from other functions.
-    :return: character dictionary if true, False if file doesn't exist.
-    """
-    try:
-        path = get_file_directory()
-        with open(os.path.join(path, char_select), 'r') as openfile:
-            char_dict = json.load(openfile)
-        return char_dict
-
-    except TypeError:
-        return False
+def save_player_data(player_dict : dict):
+    db.update_user_info(player_dict)
 
 
 def save_char_data(ctx: ctxt, stat_dict : dict):
@@ -279,13 +270,13 @@ Takes given char dictionary and file name and saves to char's file name
     return message
 
 
-def get_character(discordid : int, charname : str):
+def get_character_stats(discordid : int, charname : str) -> dict:
     character =  db.get_character_from_db(discordid, charname)
-    print(character)
     if character is None:
-        return "None"
+        return
     for value in character:
-        print(value)
+        char = rpg.convert_char_tuple_to_dict(value)
+        return char
 
 
 def print_char_stats(chardict : dict):

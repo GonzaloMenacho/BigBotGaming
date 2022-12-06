@@ -2,6 +2,7 @@ import discord.ext.commands.context as ctxt
 import discord
 import re
 import asyncio
+from . import RPG_Character as rpgc
 
 #because python imports suck
 from pathlib import Path
@@ -76,11 +77,12 @@ async def wait_for_message_in_channel(ctx,
 async def send_message_in_thread(channel : discord.TextChannel, message):
     await channel.send(message)
 
+"""
 def create_player_stats():
-    """
+
 Creates starting dictionary values for gamestate file.
     :return: player stats dictionary
-    """
+
     player_dict = {
         "level": 1,
         "exp": 0,
@@ -88,6 +90,17 @@ Creates starting dictionary values for gamestate file.
     }
 
     return player_dict
+"""
+
+async def get_player_stats(ctx: ctxt) -> dict:
+    result = await db.get_my_stats(ctx, ctx.message.author)
+    dictkeys = ("id", "points", "gold", "level", "exp")
+    playerdict = {}
+    for item in result:
+        for x in range(len(item)):
+            playerdict[dictkeys[x]] = item[x]
+    print(playerdict)
+    return playerdict
 
 
 async def get_all_chars_from_db(ctx : ctxt, thread : discord.Thread):
@@ -99,8 +112,24 @@ async def get_all_chars_from_db(ctx : ctxt, thread : discord.Thread):
         char_dict = convert_char_tuple_to_dict(characterlist[x])
         chardicts.append(char_dict)
         message = "".join([message, f"{x+1}: {char_dict['name']}\n"])
+    if message == "":
+        message = 'You have no characters! Go hire some!'
     await send_message_in_thread(thread, message)
     return chardicts
+
+
+async def get_character_choice_from_index(characterlist : list, charselect):
+    try:
+        select = int(charselect)-1
+        if select == -1:
+            return -1
+        if (select < len(characterlist)) and (select >= 0):
+            return select
+        else:
+            print(select)
+            return
+    except:
+        return
 
 
 def convert_char_tuple_to_dict(chartuple : tuple) -> dict:

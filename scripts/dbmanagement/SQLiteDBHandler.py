@@ -31,6 +31,7 @@ def execute_query(query):
     except Exception as err:
         print(f"Error: '{err}'")
 
+
 # for viewing tables and data
 def read_query(query):
     connection, cur = connectDB()
@@ -41,6 +42,7 @@ def read_query(query):
         return result
     except Exception as err:
         print(f"Error: '{err}'")
+
 
 def user_exists(userID):
     """Checks if the user exists in the DB. If they don't, it puts them in """
@@ -54,10 +56,11 @@ def user_exists(userID):
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ({userID}, 0, 0);
+        ({userID}, 0, 0, 1, 0);
         """
         execute_query(updateQuery)
         return False
+
 
 def update_points(userID, points_to_add):
     """Updates the user's points in the DB. To get userID, try using ctx.message.author.id"""
@@ -84,6 +87,7 @@ def update_points(userID, points_to_add):
         """
     execute_query(updateQuery)
 
+
 def update_gold(userID, gold_to_add):
     """Updates the user's gold in the DB. To get userID, try using ctx.message.author.id"""
     gold_to_add = int(gold_to_add)
@@ -109,19 +113,21 @@ def update_gold(userID, gold_to_add):
         """
     execute_query(updateQuery)
 
+
 async def print_full_tuples(ctx, results: str):
     for result in results:
-        ID, points, gold = result
+        ID, points, gold, level, exp = result
         member = await ctx.bot.fetch_user(ID)
-        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}")
+        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}")
+
 
 async def view_stats(ctx):
     select_query = """
     SELECT * FROM UserStats;
     """
-    
     results = read_query(select_query)
     await print_full_tuples(ctx, results)
+
 
 async def get_stats(ctx, user: discord.Member):
     userID = user.id
@@ -133,6 +139,7 @@ async def get_stats(ctx, user: discord.Member):
     """
     result = read_query(select_query)
     await print_full_tuples(ctx, result)
+    return result
 
 
 def get_character_from_db(discordid : int, charname = None) -> list:
@@ -156,10 +163,14 @@ def get_character_from_db(discordid : int, charname = None) -> list:
 def save_character_into_db(discordid : int, stat_dict : dict) -> list:
     if (discordid is None or stat_dict is None):
         return
+    try:
+        name = stat_dict['name']
+    except:
+        return
     query = f"""
     SELECT * FROM Characters
-    WHERE ID = {discordid}
-    AND name = {stat_dict['name']};
+    WHERE discordID = {discordid}
+    AND name = '{stat_dict['name']}';
     """
     if read_query(query) is not None:
         query = f"""
@@ -172,9 +183,9 @@ def save_character_into_db(discordid : int, stat_dict : dict) -> list:
             dexterity = {stat_dict['dexterity']},
             vitality = {stat_dict['vitality']},
             magic = {stat_dict['magic']},
-            spirit = {stat_dict['spirit']},
+            spirit = {stat_dict['spirit']}
         WHERE discordID = {discordid}
-        AND name = {stat_dict['name']};
+        AND name = '{stat_dict['name']}';
         """
         message = "Character Saved!"
     else:
@@ -236,9 +247,36 @@ def save_character_into_db(discordid : int, stat_dict : dict) -> list:
     return message
 
 
+def update_user_info(player_dict : dict):
+    """Updates an entire user's row in the UserInfo table"""
+    if player_dict is None:
+        return
+    user_exists(player_dict['id'])
+    query = f"""
+    UPDATE UserStats
+    SET Points = {player_dict['points']},
+    Gold = {player_dict['gold']},
+    Level = {player_dict['level']},
+    EXP = {player_dict['exp']}
+    WHERE ID = {player_dict['id']}
+    """
+    execute_query(query)
+
+
+async def get_my_stats(ctx, user: discord.Member):
+    user_exists(user.id)
+    select_query = f"""
+    SELECT * FROM UserStats
+    WHERE ID = {user.id};
+    """
+    result = read_query(select_query)
+    return result
+
+
 async def test_points(ctx):
     userID = ctx.message.author.id
     update_points(userID, int(1))
+
 
 async def test_gold(ctx):
     userID = ctx.message.author.id
