@@ -20,6 +20,8 @@ import scripts
 from dotenv import load_dotenv
 
 from scripts.Gif import playGif
+from scripts.minigames.RockPaperScissors import play_rock_paper_scissors
+from scripts.minigames.Battle import play_battle
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
@@ -108,6 +110,16 @@ async def on_member_remove(member):
     print(f'{member} has left the server')
 
 #------------Commands--------------#
+
+# rock, paper, scissors
+@client.command(name="rockpaperscissors", aliases=["rps", "jankenpon","jkp"])
+async def rock_paper_scissors(ctx):
+    await play_rock_paper_scissors(ctx, client)
+
+# battle
+@client.command(name="battle")
+async def battle(ctx):
+    await play_battle(ctx, client)
 
 # display ping
 @client.command(name="ping")
