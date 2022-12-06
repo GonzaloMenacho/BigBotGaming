@@ -134,6 +134,108 @@ async def get_stats(ctx, user: discord.Member):
     result = read_query(select_query)
     await print_full_tuples(ctx, result)
 
+
+def get_character_from_db(discordid : int, charname = None) -> list:
+    if (discordid is None):
+        print("bad discordID")
+        return
+    findChar = f"""
+    SELECT * FROM Characters
+    WHERE discordID = {discordid};
+    """
+    if charname is not None:
+        findChar = f"""
+        SELECT * FROM Characters
+        WHERE discordID = {discordid}
+        AND name = '{charname}';
+        """
+    result = read_query(findChar)
+    return result
+
+
+def save_character_into_db(discordid : int, stat_dict : dict) -> list:
+    if (discordid is None or stat_dict is None):
+        return
+    query = f"""
+    SELECT * FROM Characters
+    WHERE ID = {discordid}
+    AND name = {stat_dict['name']};
+    """
+    if read_query(query) is not None:
+        query = f"""
+        UPDATE Characters
+        SET level = {stat_dict['level']},
+            exp = {stat_dict['exp']},
+            hp = {stat_dict['hp']},
+            mp = {stat_dict['mp']},
+            strength = {stat_dict['strength']},
+            dexterity = {stat_dict['dexterity']},
+            vitality = {stat_dict['vitality']},
+            magic = {stat_dict['magic']},
+            spirit = {stat_dict['spirit']},
+        WHERE discordID = {discordid}
+        AND name = {stat_dict['name']};
+        """
+        message = "Character Saved!"
+    else:
+        print("Character doesn't exist, moving to create.")
+        skill_1 = f"'{stat_dict['skills'][0]}'" if stat_dict['skills'][0] is not None else 'NULL'
+        skill_2 = f"'{stat_dict['skills'][1]}'" if stat_dict['skills'][1] is not None else 'NULL'
+        skill_3 = f"'{stat_dict['skills'][2]}'" if stat_dict['skills'][2] is not None else 'NULL'
+        skill_4 = f"'{stat_dict['skills'][3]}'" if stat_dict['skills'][3] is not None else 'NULL'
+        skill_5 = f"'{stat_dict['skills'][4]}'" if stat_dict['skills'][4] is not None else 'NULL'
+        print(skill_1, skill_2, skill_3, skill_4, skill_5)
+        query = f"""
+        INSERT INTO Characters (
+            ID,
+            discordID,
+            name,
+            level,
+            exp,
+            hp,
+            mp,
+            strength,
+            dexterity,
+            vitality,
+            magic,
+            spirit,
+            luck,
+            weapon,
+            skill_type,
+            skill_1,
+            skill_2,
+            skill_3,
+            skill_4,
+            skill_5
+        ) 
+        VALUES (
+            NULL,
+            {discordid},
+            '{stat_dict['name']}',
+            {stat_dict['level']},
+            {stat_dict['exp']},
+            {stat_dict['hp']},
+            {stat_dict['mp']},
+            {stat_dict['strength']},
+            {stat_dict['dexterity']},
+            {stat_dict['vitality']},
+            {stat_dict['magic']},
+            {stat_dict['spirit']},
+            {stat_dict['luck']},
+            '{stat_dict['weapon']}',
+            '{stat_dict['skill_type']}',
+            {skill_1},
+            {skill_2},
+            {skill_3},
+            {skill_4},
+            {skill_5}
+        );
+        """
+        message = "Adventurer Successfully Created!"
+    execute_query(query)
+    return message
+
+
 async def test_points(ctx):
     userID = ctx.message.author.id
     update_points(userID, int(1))

@@ -28,6 +28,7 @@ from scripts.minigames.ConnectFour import playConnectFour
 from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold, get_stats
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
+from scripts.RPGGame.RPGGame import playRPG
 
 load_dotenv()
 
@@ -39,6 +40,25 @@ intents = discord.Intents.all()
 intents.members = True
 client = commands.Bot(command_prefix="!", intents=intents)
 
+
+#------------Singleton Checks-----------#
+# to ensure that each user is only running 1 game at a time
+client.current_users = set()
+
+def add_user_to_playing_list(ctx):
+    client.current_users.add(ctx.author)
+
+def remove_user_from_playing_list(ctx):
+    client.current_users.remove(ctx.author)
+
+"""
+@client.check
+async def is_user_playing(ctx):
+    if not ctx.author in client.current_users:
+        client.current_users.add(ctx.author)
+        return True
+    return False
+"""
 
 #------------Events--------------#
 @client.event
@@ -172,5 +192,17 @@ async def on_bible(ctx):
 @client.command(name="DeepLeffen")
 async def on_DeepLeffen(ctx):
     await grab_latest_tweet(ctx)
+
+
+@client.command(name="RPG")
+async def on_RPG(ctx):
+    if ctx.author not in client.current_users:
+        add_user_to_playing_list(ctx)
+        print(client.current_users)
+        await playRPG(ctx)
+        remove_user_from_playing_list(ctx)
+        print(client.current_users)
+    else:
+        await ctx.send("You are in a game already!")
 
 client.run(TOKEN)
