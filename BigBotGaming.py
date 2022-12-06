@@ -91,6 +91,7 @@ async def on_member_remove(member):
 
 #------------Commands--------------#
 
+# rock, paper, scissors
 @client.command(name="rockpaperscissors", aliases=["rps", "jankenpon","jkp"])
 async def rock_paper_scissors(ctx):
     await play_rock_paper_scissors(ctx, client)

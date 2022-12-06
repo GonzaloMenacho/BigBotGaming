@@ -7,6 +7,7 @@ choices = ["rock", "paper", "scissors"]
 
 async def play_rock_paper_scissors(ctx, client):
     member = ctx.message.author
+    # prompt user for choice
     await ctx.send(f"{member.mention}, choose your weapon! Enter rock, paper, or scissors!")
 
     def check(msg):
@@ -17,11 +18,13 @@ async def play_rock_paper_scissors(ctx, client):
     bot_weapon = choices[rand]
 
     try:   
+        # get user input
         msg = await client.wait_for("message", check=check)
         weapon = str(msg.content).lower()
 
         await ctx.send(f"I attack you with a {bot_weapon}")
         
+        # results
         if weapon == "rock" and bot_weapon == "scissors":
             await ctx.send(f"You won!")
         elif weapon == "paper" and bot_weapon == "rock":

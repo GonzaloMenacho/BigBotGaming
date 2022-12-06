@@ -11,25 +11,30 @@ winning_matchups = [("Geodude using Rock Throw", "Glaceon using Ice Shard"), ("D
 
 
 async def play_battle(ctx, client):
+    # initialize health
     player_pokemon_health = 100
     bot_pokemon_health = 100
 
     member = ctx.message.author
+    # prompt user for pokemon options
     await ctx.send(f"{member.mention}, choose your pokemon from the options below!\n 1 for Geodude using Rock Throw.\n 2 for Diglett using Sand Attack.\n 3 for Glaceon using Ice Shard.\n 4 for Bulbasaur using Razor Leaf.\n 5 for Charizard using Fire Spin.")
 
     def check(msg):
         return msg.author == ctx.author and msg.channel == ctx.channel and msg.content
 
+    # bot chooses a random pokemon
     rand = random.randint(0, 4)
     bot_pokemon = pokemon[rand]
 
     try:   
+        # get users choice
         msg = await client.wait_for("message", check=check)
         player_choice = int(msg.content) - 1 
         player_pokemon = pokemon[player_choice]
         
         await ctx.send(f"Nice choice, a {player_pokemon}!\n{bot_pokemon}, I choose you!")
 
+        # pokemon battle based on winning/losing/tied matchup
         if (player_pokemon,bot_pokemon) in winning_matchups:
             while True:
                 player_pokemon_damage = random.randint(0, 70)
