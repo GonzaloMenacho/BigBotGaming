@@ -194,7 +194,7 @@ async def on_DeepLeffen(ctx):
     await grab_latest_tweet(ctx)
 
 
-@client.command(name="RPG")
+@client.command(name="rpg")
 async def on_RPG(ctx):
     if ctx.author not in client.current_users:
         add_user_to_playing_list(ctx)

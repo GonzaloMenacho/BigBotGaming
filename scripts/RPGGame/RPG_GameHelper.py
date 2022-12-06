@@ -33,15 +33,11 @@ async def check_if_channel_exists(ctx : ctxt, name):
     for channel in ctx.guild.channels:
         if channel.name == name:
             req_channel = channel
-            #print(channel.name)
 
     for thread in ctx.guild.threads:
         if thread.name == name:
             req_channel = thread
-            #print(thread.name)
 
-    #print(req_channel)
-    #print(req_channel.id)
     return req_channel
 
 
@@ -85,19 +81,19 @@ async def get_player_stats(ctx: ctxt) -> dict:
     for item in result:
         for x in range(len(item)):
             playerdict[dictkeys[x]] = item[x]
-    print(playerdict)
+    #print(playerdict)
     return playerdict
 
 
 async def get_all_chars_from_db(ctx : ctxt, thread : discord.Thread):
     characterlist = db.get_character_from_db(ctx.message.author.id)
-    print(characterlist)
+    #print(characterlist)
     message = ""
     chardicts = []
     for x in range(len(characterlist)):
         char_dict = convert_char_tuple_to_dict(characterlist[x])
         chardicts.append(char_dict)
-        message = "".join([message, f"{x+1}: {char_dict['name']}\n"])
+        message = "".join([message, f"{x+1}: lv {char_dict['level']} - {char_dict['name']}\n"])
     if message == "":
         message = 'You have no characters! Go hire some!'
     await send_message_in_thread(thread, message)
@@ -112,7 +108,6 @@ async def get_character_choice_from_index(characterlist : list, charselect):
         if (select < len(characterlist)) and (select >= 0):
             return select
         else:
-            #print(select)
             return
     except:
         return

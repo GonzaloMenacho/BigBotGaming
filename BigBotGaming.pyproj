@@ -55,6 +55,9 @@
     <Compile Include="scripts\RPGGame\RPG_Battle.py" />
     <Compile Include="scripts\RPGGame\RPGGame.py" />
     <Compile Include="scripts\RPGGame\RPGSim.py" />
+    <Compile Include="scripts\RPGGame\RPG_Battle_Helper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="scripts\RPGGame\RPG_Character.py" />
     <Compile Include="scripts\RPGGame\RPG_GameHelper.py" />
     <Compile Include="scripts\RPGGame\__init__.py">

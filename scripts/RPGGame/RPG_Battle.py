@@ -1,5 +1,7 @@
 from . import RPG_GameHelper as rpg
 from . import RPG_Character as rpgc
+from . import RPG_Battle_Helper as rpgbh
+import time
 import random
 import asyncio
 import discord
@@ -11,33 +13,39 @@ async def initialize_battle(ctx, thread):
 A script where you can send your party into battle.
     :return: False if something goes wrong or declined by user
     """
-    party_chars = initialize_char_select()  # grabs a list of 3 chars
+    message = "ERROR!"
+    party_chars = await initialize_char_select(ctx, thread)  # grabs a list of 3 chars
     if not party_chars:
-        print("Returning to Main Menu... ")
+        message = "Returning to Main Menu..."
     else:
         char1, char2, char3 = party_chars  # unpacks list into variables
         print(char1['name'], ", ", char2['name'], ", and ", char3['name'],
               " will be partying up together.", sep='')
-        location_list = await generate_location_list()
-        message = "Where will the party be adventuring? :"
+        location_list = await generate_location_list(ctx)
         try:
-            location = select_file(location_list, message)  # select level
+            location = await select_location(ctx, thread, location_list)  # select level
             if not location:
-                print("Returning to Main Menu...")
+                message = "That location was not valid. Returning to Main Menu."
+                await rpg.send_message_in_thread(thread, message)
                 return False
-            else:
-                pass
-            print(char1['name'], ", ", char2['name'] + ", and ", char3['name'],
-                  " will be heading to ", location, ".", sep='')
-            agreement = input("Are you sure you want to send this party out? "
-                              "(y/n) :")
+
+            message = f"{char1['name']}, {char2['name']}, and {char3['name']} will be heading to {location}.\n"
+            message = "".join([message, "Are you sure you want to send this party out? (y/n)"])
+            agreement = await rpg.wait_for_message_in_channel(ctx, thread, message)
+
             if agreement == "y":
-                start_battle(char1, char2, char3, location)
+                message = f"BATTLE!"
+                await rpg. send_message_in_thread(thread, message)
+                await rpgbh.start_battle(ctx, thread, char1, char2, char3, location)
+                message = f"The battle has ended. Returning to Main Menu."
             else:
-                print("Returning to Main Menu...")
+                message = "Returning to Main Menu."
+                await rpg.send_message_in_thread(thread, message)
                 return False
+
         except TypeError:
-            print("Returning to Main Menu...")
+            message = "That location was not valid. Returning to Main Menu."
+    await rpg.send_message_in_thread(thread, message)
 
 
 async def initialize_char_select(ctx, thread):
@@ -73,13 +81,14 @@ Asks for 3 characters to be used in the battle script.
                 char_list.remove(char_list[char_select])
 
                 await rpg.send_message_in_thread(thread, message)
+                time.sleep(1)
 
                 if len(party_stats) >= 3:
                     continue
 
                 message = "Who else will party up?\n"
                 for x in range(len(char_list)):
-                    message = "".join([message, f"{x+1}: {char_list[x]['name']}\n"])
+                    message = "".join([message, f"{x+1}: lv {char_list[x]['level']} - {char_list[x]['name']}\n"])
 
         except TypeError:  # type the number, not the name, plz
             message = "That was not a valid adventurer!\n(enter '0' to go back.)"
@@ -108,7 +117,7 @@ Generates list of locations depending on player level.
     return location_list
 
 
-def level_up_guild(player_dict, message):
+def level_up_guild(player_dict):
     """
 Levels up dictionary level using check function
     :param player_dict: any dictionary
@@ -117,7 +126,6 @@ Levels up dictionary level using check function
     lvl_change = check_level_up(player_dict)
     if lvl_change:
         level = player_dict["level"] + 1
-        print(message)
         return level
     else:
         return player_dict["level"]
@@ -132,4 +140,34 @@ Checks player exp vs their level to see if guild level increases
     if player_dict["exp"] > (5 << player_dict["level"]):
         return True
     else:
+        return False
+
+
+async def select_location(ctx, thread, loc_list):
+    """
+Displays char list in numbered format, asks for selection as number, returns
+given file name.
+    :param char_list: list of characters grabbed from function
+    :param message: message taken from other function, allows modularity
+    :return: the specific file name to be read as file, or False to return to
+    Main Menu.
+    """
+    if not loc_list:
+        return False
+
+    message = ""
+    for x in range(len(loc_list)):
+        message = "".join([message, f"{x+1}: {loc_list[x]}\n"])
+    message = "".join([message, "Where would you like to go?"])
+
+    if message == "":
+        return False
+
+    locselect = await rpg.wait_for_message_in_channel(ctx, thread, message)
+    select = await rpg.get_character_choice_from_index(loc_list, locselect)
+    if select == -1:
+        return False
+    if (select < len(loc_list)) and (select >= 0):
+        return loc_list[select]
+    elif select is None:
         return False

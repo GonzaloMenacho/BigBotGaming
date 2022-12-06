@@ -273,6 +273,18 @@ def update_user_info(player_dict : dict):
     execute_query(query)
 
 
+def delete_char_from_table(ctx, name : str):
+    if (ctx is None or name is None):
+        return
+    query = f"""
+    DELETE FROM Characters
+    WHERE discordid = {ctx.message.author.id}
+    AND name = '{name}';
+    """
+    execute_query(query)
+
+
+
 async def get_my_stats(ctx):
     user_exists(ctx.message.author.id)
     select_query = f"""

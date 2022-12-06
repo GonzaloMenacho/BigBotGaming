@@ -2,6 +2,7 @@ from . import RPG_GameHelper as rpg
 import random
 import asyncio
 import discord
+import time
 import discord.ext.commands.context as ctxt
 
 #because python imports suck
@@ -56,11 +57,8 @@ and saves values to a dictionary, and character file.
             "skill_type": skill_type,
             "skills": skills,
         }
-
-        #print(stat_dict)
-        #print(stat_dict['name'])
         message = save_char_data(ctx, stat_dict)
-        print(message)
+        #print(message)
         return message
 
 
@@ -95,7 +93,7 @@ Takes character file, rolls stats, changes file dictionary, and saves file.
         message = "You don't have any adventurers to promote!"
         await rpg.send_message_in_thread(thread, message)
         return message
-    
+    time.sleep(1)
     message = f"""
     It costs 100 gold to level up a character.
     You have {player_dict['gold']} gold.
@@ -103,9 +101,10 @@ Takes character file, rolls stats, changes file dictionary, and saves file.
     """
     charselect = await rpg.wait_for_message_in_channel(ctx, thread, message)
     charindex = await rpg.get_character_choice_from_index(char_list, charselect)
+    #print(charindex, charselect)
     if charindex == -1:
         message = "Returning to Main Menu."
-    if charindex is None:
+    elif charindex is None:
         message = "Returning to Main Menu."
     else:
         character = char_list[charindex]
@@ -275,3 +274,9 @@ def print_char_stats(chardict : dict):
     for i in chardict:  # prints the dict in the file
         message = "".join([message, f"{i}: {chardict[i]}\n"])
     return message
+
+
+def kill_char(ctx, char_dict : dict):
+    name = char_dict['name']
+    db.delete_char_from_table(ctx, name)
+    return name
