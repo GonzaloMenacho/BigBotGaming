@@ -15,13 +15,14 @@ Commands:
 - !kick
 - !ban
 - !numberguess
-- !connect4
-- !reddit
+- !reddit (subreddit name)
 - !serverstats
 - !stats
-- !gif
+  - !stats @(user)
+- !gif (search phrase)
 - !bible
 - !DeepLeffen
+<!---!connect4-->
 
 In the future, we intend to expand upon these commands and add more minigames along with rewards that users can spend their minigame points on. These rewards can include custome emotes or server roles.
 
