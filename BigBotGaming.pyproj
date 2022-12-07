@@ -46,11 +46,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="scripts\minigames\RockPaperScissors.py" />
-    <Compile Include="scripts\minigames\RPGGame\RPGBattle.py" />
-    <Compile Include="scripts\minigames\RPGGame\RPGGame.py" />
-    <Compile Include="scripts\minigames\RPGGame\RPGSim.py" />
-    <Compile Include="scripts\minigames\RPGGame\RPG_Character.py" />
-    <Compile Include="scripts\minigames\RPGGame\RPG_GameHelper.py" />
     <Compile Include="scripts\minigames\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -73,17 +68,12 @@
     <Folder Include="lib\" />
     <Folder Include="scripts\minigames\" />
     <Folder Include="scripts\dbmanagement\" />
-    <Folder Include="scripts\minigames\RPGGame\" />
-    <Folder Include="scripts\minigames\RPGGame\__pycache__\" />
     <Folder Include="scripts\RPGGame\" />
     <Folder Include="scripts\RPGGame\__pycache__\" />
     <Folder Include="tests\" />
     <Folder Include="scripts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
-    <Content Include="scripts\minigames\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
-    <Content Include="scripts\minigames\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />

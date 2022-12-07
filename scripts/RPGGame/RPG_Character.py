@@ -2,7 +2,6 @@ from . import RPG_GameHelper as rpg
 import random
 import asyncio
 import discord
-import time
 import discord.ext.commands.context as ctxt
 from scripts.dbmanagement.SQLiteDBHandler import update_points
 
@@ -94,7 +93,7 @@ Takes character file, rolls stats, changes file dictionary, and saves file.
         message = "You don't have any adventurers to promote!"
         await rpg.send_message_in_thread(thread, message)
         return message
-    time.sleep(1)
+    await asyncio.sleep(1)
     message = f"""
     It costs 100 gold to level up a character.
     You have {player_dict['gold']} gold.

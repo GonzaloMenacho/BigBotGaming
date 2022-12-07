@@ -15,8 +15,6 @@ import os
 import random
 import sys
 
-import scripts
-
 from dotenv import load_dotenv
 
 from scripts.Gif import playGif

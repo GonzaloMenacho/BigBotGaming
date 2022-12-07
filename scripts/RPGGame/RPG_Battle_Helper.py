@@ -1,11 +1,8 @@
 from . import RPG_GameHelper as rpg
 from . import RPG_Character as rpgc
 from . import RPG_Battle as rpgb
-import time
 import random
 import asyncio
-import discord
-import discord.ext.commands.context as ctxt
 
 
 async def start_battle(ctx, thread, char1 : dict, char2 : dict, char3 : dict, location : str):
@@ -21,7 +18,7 @@ selected location.
     message = f"The party encountered a {enemy['name']}!\n The {enemy['name']} has {enemy['hp']} HP. :blue_heart:"
     await rpg.send_message_in_thread(thread, message)
     #print("\nThe party encountered a ", enemy["name"], "!", sep='')
-    time.sleep(3)
+    await asyncio.sleep(3)
     party_list = [char1, char2, char3]
     battle_list = [char1, char2, char3, enemy]
     battle_list.sort(reverse=True, key=grab_char_dex_stat)
@@ -68,7 +65,7 @@ selected location.
 
         # checks if dead guy is ally or enemy, then cues respective scene
         await rpg.send_message_in_thread(thread, message)
-        time.sleep(5)
+        await asyncio.sleep(5)
 
         if defender["hp"] <= 0:
             defender_team = await check_defender_team(thread, defender, party_list)
@@ -309,8 +306,6 @@ Calculates attack damage from given attacker and defender parameters.
     if random_critical <= critical_hit:
         damage *= 3
         message = (":clap::exclamation: Critical Hit!! Critical Hit!! :exclamation::clap:\n")
-        #print("Critical Hit!!" * 2)
-        #time.sleep(2)
     else:
         message = ""
 
@@ -350,23 +345,23 @@ Runs script when enemy is killed in battle.
     message = "The victorious adventurers return to the guild with their heads held high.\n"
     message = "".join([message, "The battle proved successful thanks to your leadership.\n"])
     message = "".join([message, "Well done, guild master."])
-    time.sleep(2)
+    await asyncio.sleep(2)
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(4)
+    await asyncio.sleep(4)
     player_dict = await rpg.get_player_stats(ctx)
     player_dict["gold"] += defender["money"]
     player_dict["exp"] += defender["exp"]
 
     message = f"You gained {defender['money']} gold and {defender['exp']} experience!"
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(3)
+    await asyncio.sleep(3)
 
     # Does the Guild level up?
     level = rpgb.level_up_guild(player_dict)
     if level > player_dict['level']:
         await rpg.send_message_in_thread(thread, "Your Guild Hall has leveled up!")
     player_dict["level"] = level
-    #time.sleep(2)
+
     rpgc.save_player_data(player_dict)
 
     char1["exp"] += defender["exp"] * 2
@@ -375,17 +370,17 @@ Runs script when enemy is killed in battle.
     lvl_check = rpgb.check_level_up(char1)
     if lvl_check:
         await rpg.send_message_in_thread(thread, rpgc.level_up_stats(ctx, char1))
-        time.sleep(2)
+        await asyncio.sleep(2)
 
     lvl_check = rpgb.check_level_up(char2)
     if lvl_check:
         await rpg.send_message_in_thread(thread, rpgc.level_up_stats(ctx, char2))
-        time.sleep(2)
+        await asyncio.sleep(2)
 
     lvl_check = rpgb.check_level_up(char3)
     if lvl_check:
         await rpg.send_message_in_thread(thread, rpgc.level_up_stats(ctx, char3))
-        time.sleep(2)
+        await asyncio.sleep(2)
     
     return
 
@@ -399,23 +394,23 @@ May the dead rest in peace.
     The adventurers return to the guild, defeated, and with one less member in tow.
     """
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(3)
+    await asyncio.sleep(3)
 
     message = f"""
     Your lack of judgement has led to one of your guild members perishing.
     """
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(2)
+    await asyncio.sleep(3)
 
     message = f"""
     The dead don't rise where you're from, so don't expect to see {defender['name']} again.
     """
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(3)
+    await asyncio.sleep(3)
 
     message = f"""
     :skull:
     """
     await rpg.send_message_in_thread(thread, message)
-    time.sleep(5)
+    await asyncio.sleep(3)
     rpgc.kill_char(ctx, defender)

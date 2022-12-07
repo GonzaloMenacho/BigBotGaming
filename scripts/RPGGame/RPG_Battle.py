@@ -1,11 +1,6 @@
 from . import RPG_GameHelper as rpg
-from . import RPG_Character as rpgc
 from . import RPG_Battle_Helper as rpgbh
-import time
-import random
 import asyncio
-import discord
-import discord.ext.commands.context as ctxt
 
 
 async def initialize_battle(ctx, thread):
@@ -36,7 +31,7 @@ A script where you can send your party into battle.
             if agreement == "y":
                 message = f"BATTLE!"
                 await rpg. send_message_in_thread(thread, message)
-                time.sleep(3)
+                await asyncio.sleep(3)
                 await rpgbh.start_battle(ctx, thread, char1, char2, char3, location)
                 message = f"The battle has ended. Returning to Main Menu."
             else:
@@ -82,7 +77,7 @@ Asks for 3 characters to be used in the battle script.
                 char_list.remove(char_list[char_select])
 
                 await rpg.send_message_in_thread(thread, message)
-                time.sleep(1)
+                await asyncio.sleep(1)
 
                 if len(party_stats) >= 3:
                     continue

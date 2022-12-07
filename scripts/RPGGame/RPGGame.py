@@ -1,7 +1,6 @@
 import discord
 import discord.ext.commands.context as ctxt
 import sys
-import time
 import asyncio
 from . import RPG_GameHelper as rpg
 from . import RPG_Character as rpgc
@@ -46,28 +45,28 @@ Enter your option:
     if message == "1":
         #await rpg.send_message_in_thread(thread, "Send Adventuring Party")
         print(await rpgb.initialize_battle(ctx, thread))
-        time.sleep(2)
+        await asyncio.sleep(2)
     elif message == "2":
         #await rpg.send_message_in_thread(thread, "Hire Adventurer")
         await create_char(ctx, thread)
-        time.sleep(2)
+        await asyncio.sleep(2)
     elif message == "3":
         #await rpg.send_message_in_thread(thread, "View Adventurer Stats")
         await print_chars_in_db(ctx, thread)
-        time.sleep(2)
+        await asyncio.sleep(2)
     elif message == "4":
         # await rpg.send_message_in_thread(thread, "Level Up")
         await rpgc.level_up_from_menu(ctx, thread)
-        time.sleep(2)
+        await asyncio.sleep(2)
     elif message == "5":
         await print_player_stats(ctx, thread)
-        time.sleep(2)
+        await asyncio.sleep(2)
     elif message == "0" or message == -1:
         await rpg.send_message_in_thread(thread, "Close Program")
         return False
     else:
         await rpg.send_message_in_thread(thread, "Unknown Input!")
-        time.sleep(1)
+        await asyncio.sleep(1)
     return True
 
     """
@@ -75,7 +74,6 @@ Enter your option:
         await rpg.send_message_in_thread(thread, "Guild Promotion")
         level = rpgb.level_up_guild(await rpg.get_player_stats(ctx))
         await rpg.send_message_in_thread(thread, f"Your guild level is {level}")
-        time.sleep(2)
     """
 
 

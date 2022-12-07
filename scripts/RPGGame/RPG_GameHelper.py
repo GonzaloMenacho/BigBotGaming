@@ -2,7 +2,6 @@ import discord.ext.commands.context as ctxt
 import discord
 import re
 import asyncio
-from . import RPG_Character as rpgc
 
 #because python imports suck
 from pathlib import Path
