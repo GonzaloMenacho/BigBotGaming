@@ -4,6 +4,7 @@ import asyncio
 import discord
 import time
 import discord.ext.commands.context as ctxt
+from scripts.dbmanagement.SQLiteDBHandler import update_points
 
 #because python imports suck
 from pathlib import Path
@@ -111,6 +112,9 @@ Takes character file, rolls stats, changes file dictionary, and saves file.
         player_dict["gold"] -= 100
         save_player_data(player_dict)
         message = level_up_stats(ctx, character)
+        # Award 5 points
+        userID = ctx.message.author.id
+        update_points(userID, int(5))
     await rpg.send_message_in_thread(thread, message)
 
 

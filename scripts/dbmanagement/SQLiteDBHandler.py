@@ -83,7 +83,7 @@ def update_points(userID, points_to_add):
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ({userID}, {points_to_add}, 0);
+        ({userID}, {points_to_add}, 0, 1, 0);
         """
     execute_query(updateQuery)
 
@@ -109,7 +109,7 @@ def update_gold(userID, gold_to_add):
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ({userID}, 0, {gold_to_add});
+        ({userID}, 0, {gold_to_add}, 1, 0);
         """
     execute_query(updateQuery)
 

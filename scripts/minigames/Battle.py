@@ -2,6 +2,7 @@ import random
 import discord
 import asyncio
 import time
+from scripts.dbmanagement.SQLiteDBHandler import update_points
 
 
 pokemon = ["Geodude using Rock Throw", "Diglett using Sand Attack", "Glaceon using Ice Shard", "Bulbasaur using Razor Leaf", "Charizard using Fire Spin"]
@@ -42,6 +43,7 @@ async def play_battle(ctx, client):
                 await ctx.send(f"\n{member.mention}'s pokemon attacked for {player_pokemon_damage} damage!\nMy pokemon has {bot_pokemon_health} health remaining!")
                 if bot_pokemon_health <= 0:
                     await ctx.send(f"A critical hit! {member.mention} & your {player_pokemon} are your champions! Well fought!")
+                    await win(ctx)
                     break
                 bot_attack_dmg = random.randint(0, 30)
                 player_pokemon_health -= bot_attack_dmg
@@ -56,6 +58,7 @@ async def play_battle(ctx, client):
                 await ctx.send(f"\n{member.mention}'s pokemon attacked for {player_pokemon_damage} damage!\nMy pokemon has {bot_pokemon_health} health remaining!")
                 if bot_pokemon_health <= 0:
                     await ctx.send(f"My pokemon cannot go any longer! {member.mention} & your {player_pokemon} are your champions! Well fought!")
+                    await win(ctx)
                     break
                 bot_attack_dmg = random.randint(0, 50)
                 player_pokemon_health -= bot_attack_dmg
@@ -70,6 +73,7 @@ async def play_battle(ctx, client):
                 await ctx.send(f"\n{member.mention}'s pokemon attacked for {player_pokemon_damage} damage!\nMy pokemon has {bot_pokemon_health} health! remaining")
                 if bot_pokemon_health <= 0:
                     await ctx.send(f"My pokemon cannot go on! {member.mention} & your {player_pokemon} are your champions! Well fought!")
+                    await win(ctx)
                     break
                 bot_attack_dmg = random.randint(0, 70)
                 player_pokemon_health -= bot_attack_dmg
@@ -86,3 +90,9 @@ async def play_battle(ctx, client):
             
     except asyncio.TimeoutError:
         await ctx.send("This is not that hard, try faster next time!")
+
+
+async def win(ctx):
+    # Award 10 points
+    userID = ctx.message.author.id
+    update_points(userID, int(10))
