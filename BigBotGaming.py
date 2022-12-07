@@ -25,7 +25,7 @@ from scripts.minigames.Battle import play_battle
 from scripts.minigames.NumberGuess import playNumberGuesser
 from scripts.minigames.RedditPull import pullRedditPost
 from scripts.minigames.ConnectFour import playConnectFour
-from scripts.dbmanagement.SQLiteDBHandler import view_stats, test_points, test_gold, get_stats
+from scripts.dbmanagement.SQLiteDBHandler import view_top5, test_points, test_gold, get_stats
 from scripts.bibleversememe.versescript import sendverse
 from scripts.tweet import grab_latest_tweet
 from scripts.RPGGame.RPGGame import playRPG
@@ -155,7 +155,7 @@ async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
 # displays the stats of all users on the server
 @client.command(name="serverstats")
 async def on_serverstats(ctx):
-    await view_stats(ctx)
+    await view_top5(ctx)
 
 # displays a specific user's stats
 @client.command(name="stats", help="!stats @<User>")

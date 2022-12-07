@@ -83,7 +83,7 @@ def update_points(userID, points_to_add):
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ({userID}, {points_to_add}, 0);
+        ({userID}, {points_to_add}, 0, 1, 0);
         """
     execute_query(updateQuery)
 
@@ -109,20 +109,38 @@ def update_gold(userID, gold_to_add):
     else:
         updateQuery = f"""
         INSERT INTO UserStats VALUES
-        ({userID}, 0, {gold_to_add});
+        ({userID}, 0, {gold_to_add}, 1, 0);
         """
     execute_query(updateQuery)
 
 """
-MAKE SURE THE TABLE ONLY HAS LEGITIMATE USERS IN IT
+MAKE SURE THE TABLE ONLY HAS LEGITIMATE USERS IN IT (don't manually add fake user IDs to the table)
 """
 async def print_full_tuples(ctx, results: str):
     for result in results:
         ID, points, gold, level, exp = result
         member = await ctx.bot.fetch_user(ID)
-        await ctx.send(f"{member.name}\nPoints: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}")
+        embed=discord.Embed(title=f"{member.name}",
+                        url="https://realdrewdata.medium.com/",
+                        color=0xFF5733)
 
+        embed.add_field(name = "Stats", value=f"Points: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}", inline=False)
+        await ctx.send(embed=embed)
 
+async def print_ranked_tuples(ctx, results: str):
+    i = 0
+    for result in results:
+        ID, points, gold, level, exp = result
+        member = await ctx.bot.fetch_user(ID)
+        i+=1
+        embed=discord.Embed(title=f"Rank {i}",
+                        url="https://realdrewdata.medium.com/",
+                        color=0xFF5733)
+
+        embed.add_field(name=f"{member.name}", value=f"Points: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}", inline=False)
+        await ctx.send(embed=embed)
+
+# all info on each player in the server
 async def view_stats(ctx):
     select_query = """
     SELECT * FROM UserStats;
@@ -130,7 +148,16 @@ async def view_stats(ctx):
     results = read_query(select_query)
     await print_full_tuples(ctx, results)
 
+# all info on the players with the top 5 points
+async def view_top5(ctx):
+    select_query = """
+    SELECT * FROM UserStats
+    ORDER BY Points DESC;
+    """
+    results = read_query(select_query)
+    await print_ranked_tuples(ctx, results)
 
+# all info on specific player
 async def get_stats(ctx, user: discord.Member):
     userID = user.id
     user_exists(userID)
