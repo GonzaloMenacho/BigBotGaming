@@ -114,7 +114,7 @@ def update_gold(userID, gold_to_add):
     execute_query(updateQuery)
 
 """
-MAKE SURE THE TABLE ONLY HAS LEGITIMATE USERS IN IT
+MAKE SURE THE TABLE ONLY HAS LEGITIMATE USERS IN IT (don't manually add fake user IDs to the table)
 """
 async def print_full_tuples(ctx, results: str):
     for result in results:
@@ -157,6 +157,7 @@ async def view_top5(ctx):
     results = read_query(select_query)
     await print_ranked_tuples(ctx, results)
 
+# all info on specific player
 async def get_stats(ctx, user: discord.Member):
     userID = user.id
     user_exists(userID)
