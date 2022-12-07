@@ -110,8 +110,8 @@ async def on_member_remove(member):
 #------------Commands--------------#
 
 # rock, paper, scissors
-@client.command(name="rockpaperscissors", aliases=["rps", "jankenpon","jkp"])
-async def rock_paper_scissors(ctx):
+@client.command(name="rps", aliases=["rockpaperscissors", "jankenpon","jkp"], help="!rps or !rockpaperscissors or !jankenpon or !jkp")
+async def rps(ctx):
     await play_rock_paper_scissors(ctx, client)
 
 # battle
@@ -141,9 +141,11 @@ async def on_number_guesser(ctx):
     await playNumberGuesser(ctx, client)
 
 # connect four minigame
+"""
 @client.command(name="connect4", help="!connect4 @<User>")
 async def on_connect_four(ctx, opponent: discord.Member):
     await playConnectFour(ctx, ctx.author, opponent)
+"""
 
 # reddit posting function
 @client.command(name="reddit",help="!reddit <subreddit>")
