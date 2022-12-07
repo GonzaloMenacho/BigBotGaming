@@ -9,8 +9,6 @@ import pandas as pd
 import sqlite3
 from itertools import chain
 
-DBPASSWORD = os.getenv('DBPASSWORD')
-
 def connectDB():
     # connect to database
     connection = sqlite3.connect(r"scripts\dbmanagement\UserInfo.db")
@@ -120,25 +118,45 @@ async def print_full_tuples(ctx, results: str):
     for result in results:
         ID, points, gold, level, exp = result
         member = await ctx.bot.fetch_user(ID)
+        red = 0xFF1010
         embed=discord.Embed(title=f"{member.name}",
                         url="https://realdrewdata.medium.com/",
-                        color=0xFF5733)
+                        color=red)
 
         embed.add_field(name = "Stats", value=f"Points: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}", inline=False)
         await ctx.send(embed=embed)
 
 async def print_ranked_tuples(ctx, results: str):
-    i = 0
+    rankNum = 0
+    colors = {
+        'red': 0xFF1010,
+        'green': 0x03D000,
+        'blue': 0x106EFF,
+        'yellow': 0xFFFB10, 
+        'purple': 0x8B10FF}
+    rankColor = colors["red"]
     for result in results:
         ID, points, gold, level, exp = result
         member = await ctx.bot.fetch_user(ID)
-        i+=1
-        embed=discord.Embed(title=f"Rank {i}",
+        rankNum+=1
+
+        if rankNum == 2:
+            rankColor = colors["green"]
+        elif rankNum == 3:
+            rankColor = colors["blue"]
+        elif rankNum == 4:
+            rankColor = colors["yellow"]
+        elif rankNum >= 5:
+            rankColor = colors["purple"]
+        
+        embed=discord.Embed(title=f"Rank {rankNum}",
                         url="https://realdrewdata.medium.com/",
-                        color=0xFF5733)
+                        color=rankColor)
 
         embed.add_field(name=f"{member.name}", value=f"Points: {points}\nGold: {gold}\nLevel: {level}\nEXP: {exp}", inline=False)
         await ctx.send(embed=embed)
+        if rankNum >= 5:
+            break
 
 # all info on each player in the server
 async def view_stats(ctx):
