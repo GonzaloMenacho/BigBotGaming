@@ -190,9 +190,9 @@ async def on_bible(ctx):
     await sendverse(ctx)
 
 # sends specific users latest tweet DO NOT USE MORE THAN 900 TIMES IN 15 MINUTES
-@client.command(name="DeepLeffen")
-async def on_DeepLeffen(ctx):
-    await grab_latest_tweet(ctx)
+@client.command(name="tweet")
+async def on_Tweet(ctx, handle="elonmusk"):
+    await grab_latest_tweet(ctx, handle)
 
 
 @client.command(name="rpg")
