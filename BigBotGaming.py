@@ -116,7 +116,7 @@ async def on_reaction_add(reaction, user):
 
     # prompt users to vote
     if reaction.emoji == "🤓": 
-        await channel.send(f"{user.name} has voted for the message [{reaction.message.content}] to be deleted. React with an {reaction.emoji} if you agree.")
+        await channel.send(f"{user.name} has voted for a message to be deleted. React with an {reaction.emoji} if you agree.")
 
     # delete message
     if reaction.count >= 3 and reaction.emoji == "🤓": 
@@ -165,7 +165,7 @@ async def on_connect_four(ctx, opponent: discord.Member):
 
 # reddit posting function
 @client.command(name="reddit",help="!reddit <subreddit>")
-async def on_reddit_post(ctx, subredditname: str="programmerhumor"):
+async def on_reddit_post(ctx, subredditname: str="197"):
     await pullRedditPost(ctx, subredditname)
 
 # displays the stats of all users on the server

@@ -13,7 +13,7 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-async def pullRedditPost(ctx, subredditname: str="programmerhumor"):
+async def pullRedditPost(ctx, subredditname: str="197"):
     try:
         subreddit = reddit.subreddit(subredditname)
         random_submission = subreddit.random()

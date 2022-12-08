@@ -24,4 +24,4 @@ async def grab_latest_tweet(ctx, username):
         tweet= tweets_list[0]
         await ctx.send(tweet.full_text)
     except:
-        await ctx.send("That Twitter handle was not found!")
+        await ctx.send(f"The Twitter handle {username} was not found!")
