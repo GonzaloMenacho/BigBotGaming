@@ -29,3 +29,5 @@ async def playGif(ctx,topic):
         await ctx.channel.send(gif.images.original.url)
     except ApiException as e:
         print("Error when calling DefaultApi-'>gifs_search_get': %s\n" % e)
+    except:
+        await ctx.channel.send("Gif was not found!")
