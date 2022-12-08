@@ -2,7 +2,7 @@ import discord
 import random
 
 async def sendverse(ctx):
-    line = random.randint(0,13)
+    line = random.randint(0,6)
     file = open("scripts/bibleversememe/verse.txt")
     content = file.readlines()
     #print(content[line])

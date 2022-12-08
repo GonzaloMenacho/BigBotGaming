@@ -111,9 +111,6 @@ Takes character file, rolls stats, changes file dictionary, and saves file.
         player_dict["gold"] -= 100
         save_player_data(player_dict)
         message = level_up_stats(ctx, character)
-        # Award 5 points
-        userID = ctx.message.author.id
-        update_points(userID, int(5))
     await rpg.send_message_in_thread(thread, message)
 
 
@@ -141,6 +138,11 @@ Rolls stats and adds them to chosen filename's dictionary
     char_dict.update(char_dict_updated)
     save_char_data(ctx, char_dict)
     message = f"{char_dict['name']} has been successfully promoted to level {char_dict['level']}! :bulb:"
+
+    # Award 5 points
+    userID = ctx.message.author.id
+    update_points(userID, int(5))
+    message = "\n".join([message, "You gained 5 points!"])
     return message
 
 

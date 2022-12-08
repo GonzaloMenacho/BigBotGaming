@@ -25,6 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BigBotGaming.py" />
+    <Compile Include="scripts\bibleversememe\versescript.py" />
     <Compile Include="scripts\dbmanagement\SQLiteDBHandler.py">
       <SubType>Code</SubType>
     </Compile>
@@ -66,6 +67,8 @@
     <Folder Include="doc\" />
     <Folder Include="apidoc\" />
     <Folder Include="lib\" />
+    <Folder Include="scripts\bibleversememe\" />
+    <Folder Include="scripts\bibleversememe\__pycache__\" />
     <Folder Include="scripts\minigames\" />
     <Folder Include="scripts\dbmanagement\" />
     <Folder Include="scripts\RPGGame\" />
@@ -74,6 +77,8 @@
     <Folder Include="scripts\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scripts\bibleversememe\verse.txt" />
+    <Content Include="scripts\bibleversememe\__pycache__\versescript.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPGGame.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPGGameLoop.cpython-39.pyc" />
     <Content Include="scripts\RPGGame\__pycache__\RPG_GameHelper.cpython-39.pyc" />

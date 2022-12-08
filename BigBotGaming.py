@@ -1,5 +1,6 @@
 #python -m pip install discord.py
 #
+from pickle import TRUE
 from xml.dom import pulldom
 
 #from mysql.connector.pooling import connect
@@ -84,7 +85,7 @@ async def on_member_join(member: discord.Member=None):
     rating = 'g' # filters based on rating (g, pg, pg-13, r)
     limit = 10
     name = member.display_name
-    channel = discord.utils.get(member.guild.text_channels, name="welcome")
+    channel = member.guild.system_channel
 
     try:
         # searches all Giphy Gifs based on arguments above
@@ -118,7 +119,7 @@ async def on_reaction_add(reaction, user):
         await channel.send(f"{user.name} has voted for the message [{reaction.message.content}] to be deleted. React with an {reaction.emoji} if you agree.")
 
     # delete message
-    if reaction.count == 4 and reaction.emoji == "🤓": 
+    if reaction.count >= 3 and reaction.emoji == "🤓": 
         await reaction.message.delete()
         await channel.send("Message has been deleted.")     
 
@@ -164,7 +165,7 @@ async def on_connect_four(ctx, opponent: discord.Member):
 
 # reddit posting function
 @client.command(name="reddit",help="!reddit <subreddit>")
-async def on_reddit_post(ctx, subredditname: str="okaybuddyretard"):
+async def on_reddit_post(ctx, subredditname: str="programmerhumor"):
     await pullRedditPost(ctx, subredditname)
 
 # displays the stats of all users on the server
@@ -195,17 +196,17 @@ async def on_gibgold(ctx):
 
 # pass a topic and bot sends a randomized gif 
 @client.command(name="gif", help="!gif <search term>")
-async def on_gif(ctx,*,topic):
+async def on_gif(ctx,*,topic="among us"):
     await playGif(ctx,topic)
 
 # send random bible verse that is deemed "funny" or "unordinary"
-@client.command(name="bible")
-async def on_bible(ctx):
+@client.command(name="quote")
+async def on_quote(ctx):
     await sendverse(ctx)
 
 # sends specific users latest tweet DO NOT USE MORE THAN 900 TIMES IN 15 MINUTES
 @client.command(name="tweet")
-async def on_Tweet(ctx, handle="elonmusk"):
+async def on_Tweet(ctx, handle="dril"):
     await grab_latest_tweet(ctx, handle)
 
 
@@ -224,11 +225,11 @@ async def on_RPG(ctx):
 async def help(ctx):
     em = discord.Embed(title= "Help", description = "Use !help <command> for extended info on a command.", color = discord.Color.green())
     
-    em.add_field(name = "Moderation", value = "kick, ban, gibpoints, gibgold")
-    em.add_field(name = "MiniGames", value = "rockpaperscissors, battle, numberguess, rpg")
-    em.add_field(name= "Social Media", value="tweet, reddit, gif")
-    em.add_field(name="Stats", value="serverstats, stats,")
-    em.add_field(name= "Misc.", value="ping")
+    em.add_field(name = "Moderation", value = "kick :clap: | ban :hammer: | gibpoints | gibgold", inline=False)
+    em.add_field(name = "MiniGames", value = "rps :right_fist: | battle :speak_no_evil: | numberguess :1234: | rpg :crossed_swords:", inline=False)
+    em.add_field(name= "Social Media", value="tweet :bird: | reddit :nerd: | gif :eyes:", inline=False)
+    em.add_field(name="Stats", value="serverstats :trophy: | stats :coffee:", inline=False)
+    em.add_field(name= "Misc.", value="ping :timer: | quote :speaking_head:", inline=False)
 
     await ctx.send(embed = em)
 
@@ -245,9 +246,9 @@ async def ban(ctx):
     await ctx.send(embed = em)
 
 @help.command()
-async def rockpaperscissors(ctx):
-    em = discord.Embed(title="rockpaperscissors",description="Starts a game of rockpaperscissors", color = discord.Color.green())
-    em.add_field(name="Syntax", value="!rockpaperscissors")
+async def rps(ctx):
+    em = discord.Embed(title="rps",description="Starts a game of rock, paper, scissors", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!rps")
     await ctx.send(embed = em)
 
 @help.command()
@@ -311,9 +312,9 @@ async def gibgold(ctx):
     await ctx.send(embed = em)
 
 @help.command()
-async def bible(ctx):
-    em = discord.Embed(title="bible",description="Sends funny quote from the Christan bible.", color = discord.Color.green())
-    em.add_field(name="Syntax", value="!bible")
+async def quote(ctx):
+    em = discord.Embed(title="quote",description="Sends funny quote from film.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!quote")
     await ctx.send(embed = em)
 
 @help.command()
