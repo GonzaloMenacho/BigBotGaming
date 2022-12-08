@@ -1,32 +1,35 @@
-# MinigameDiscordBot
-### Using the Giphy Developers Doc: https://developers.giphy.com/docs/sdk and methods imported from the giphy_client.DefaultApi: https://github.com/Giphy/giphy-python-client/blob/master/docs/DefaultApi.md\
+# GonziBot
+This project is a multi-purpose Discord bot made for entertainment. The features we decided to add to the bot were things we thought would make Discord nights a little bit more fun!
 
-This project is a multi-purpose Discord bot made for primarily for fun. The features and commands we decided to add to the bot were features we thought would be funny or entertaining.
-Currently, the bot has commands that: 
-- Pull posts from multiple different social media API's like Twitter, Reddit, and Giphy
-- Play through small minigames
-- Store minigame points and user information in an SQLite db file
-- Send messages of randomly chosen quotes (i.e., bible verses)
-- Send welcome messages to new users
-- Send gifs based off of what users request
+## Bot Features: 
+- Earn gold and points by playing minigames.
+- A SQLite database to save data, integrated directly into Python!
+- Pull posts from social media, including Twitter and Reddit.
+- Send messages of randomly chosen film quotes.
+- Send welcome messages to new users.
+- Send funny gifs using the command.
+- Display a leaderboard of all players.
+- Delete user posts using emojis.
+And more!
 
-Commands:
+## Commands:
+- !rpg
+- !rps
+- !battle
+- !numberguess
+- !tweet \<twitter handle\>
+- !reddit \<subreddit\>
+- !gif \<topic\>
+- !serverstats
+- !stats \<@user\>
 - !ping
 - !kick
 - !ban
-- !numberguess
-- !reddit (subreddit name)
-- !serverstats
-- !stats
-  - !stats @(user)
-- !gif (search phrase)
-- !bible
-- !DeepLeffen
-<!---!connect4-->
+- !quote
 
-In the future, we intend to expand upon these commands and add more minigames along with rewards that users can spend their minigame points on. These rewards can include custome emotes or server roles.
+In the future, we intend to expand upon these commands, add more minigames, and create a rewards shop that users can spend their minigame points and gold on. These rewards can include custom emotes or server roles.
 
-### Bot Examples
+## Bot Examples
 ![image](https://user-images.githubusercontent.com/72235489/199866877-7caa14b2-5ef8-435b-a585-b98eee940e12.png)
 
 ![image](https://user-images.githubusercontent.com/72235489/199866814-0690876a-07de-44dc-bb41-846e736f5fd8.png)
