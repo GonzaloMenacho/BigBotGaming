@@ -215,7 +215,10 @@ async def on_RPG(ctx):
     if ctx.author not in client.current_users:
         add_user_to_playing_list(ctx)
         print(client.current_users)
-        await playRPG(ctx)
+        try:
+            await playRPG(ctx)
+        except:
+            await ctx.send("The thread was deleted while playing RPG!")
         remove_user_from_playing_list(ctx)
         print(client.current_users)
     else:
@@ -277,26 +280,26 @@ async def tweet(ctx):
 
 @help.command()
 async def reddit(ctx):
-    em = discord.Embed(title="reddit",description="Sends latest post from r/programminghumor", color = discord.Color.green())
-    em.add_field(name="Syntax", value="!reddit")
+    em = discord.Embed(title="reddit",description="Sends a random post from the subreddit chosen.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!reddit <subreddit>")
     await ctx.send(embed = em)
 
 @help.command()
 async def gif(ctx):
-    em = discord.Embed(title="gif",description="Sends gif of entered subject!", color = discord.Color.green())
-    em.add_field(name="Syntax", value="!gif <subject>")
+    em = discord.Embed(title="gif",description="Sends a gif of the chosen topic.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!gif <topic>")
     await ctx.send(embed = em)
 
 @help.command()
 async def serverstats(ctx):
-    em = discord.Embed(title="serverstats",description="Displays stats of all users in ther server!", color = discord.Color.green())
+    em = discord.Embed(title="serverstats",description="Displays stats of all users.", color = discord.Color.green())
     em.add_field(name="Syntax", value="!serverstats")
     await ctx.send(embed = em)
 
 @help.command()
 async def stats(ctx):
     em = discord.Embed(title="stats",description="Displays stats of a specified user.", color = discord.Color.green())
-    em.add_field(name="Syntax", value="!stats <user>")
+    em.add_field(name="Syntax", value="!stats @<user>")
     await ctx.send(embed = em)
 
 @help.command()
@@ -313,13 +316,13 @@ async def gibgold(ctx):
 
 @help.command()
 async def quote(ctx):
-    em = discord.Embed(title="quote",description="Sends funny quote from film.", color = discord.Color.green())
+    em = discord.Embed(title="quote",description="Sends a funny quote from film.", color = discord.Color.green())
     em.add_field(name="Syntax", value="!quote")
     await ctx.send(embed = em)
 
 @help.command()
 async def ping(ctx):
-    em = discord.Embed(title="ping",description="Sends your ping to discord server!", color = discord.Color.green())
+    em = discord.Embed(title="ping",description="Sends your ping to Discord server.", color = discord.Color.green())
     em.add_field(name="Syntax", value="!ping")
     await ctx.send(embed = em)
 
