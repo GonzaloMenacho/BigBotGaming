@@ -37,6 +37,7 @@ GIPHY_API = os.getenv('GIPHY_API')
 intents = discord.Intents.all()
 intents.members = True
 client = commands.Bot(command_prefix="!", intents=intents)
+client.remove_command("help")
 
 
 #------------Singleton Checks-----------#
@@ -204,5 +205,109 @@ async def on_RPG(ctx):
         print(client.current_users)
     else:
         await ctx.send("You are in a game already!")
+
+@client.group(invoke_without_command=True)
+async def help(ctx):
+    em = discord.Embed(title= "Help", description = "Use !help <command> for extended info on a command.", color = discord.Color.green())
+    
+    em.add_field(name = "Moderation", value = "kick, ban, gibpoints, gibgold")
+    em.add_field(name = "MiniGames", value = "rockpaperscissors, battle, numberguess, rpg")
+    em.add_field(name= "Social Media", value="tweet, reddit, gif")
+    em.add_field(name="Stats", value="serverstats, stats,")
+    em.add_field(name= "Misc.", value="ping")
+
+    await ctx.send(embed = em)
+
+@help.command()
+async def kick(ctx):
+    em = discord.Embed(title="kick",description="Will kick a user from the server.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!kick <user> [reason]")
+    await ctx.send(embed = em)
+
+@help.command()
+async def ban(ctx):
+    em = discord.Embed(title="ban",description="Will ban a user from the server.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!ban <user> [reason]")
+    await ctx.send(embed = em)
+
+@help.command()
+async def rockpaperscissors(ctx):
+    em = discord.Embed(title="rockpaperscissors",description="Starts a game of rockpaperscissors", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!rockpaperscissors")
+    await ctx.send(embed = em)
+
+@help.command()
+async def battle(ctx):
+    em = discord.Embed(title="battle",description="Starts a battle", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!battle")
+    await ctx.send(embed = em)
+
+@help.command()
+async def numberguess(ctx):
+    em = discord.Embed(title="numberguess",description="Guess the number right and you might get a prize!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!numberguess")
+    await ctx.send(embed = em)
+
+@help.command()
+async def rpg(ctx):
+    em = discord.Embed(title="rpg",description="Small rpg minigame!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!rpg")
+    await ctx.send(embed = em)
+
+@help.command()
+async def tweet(ctx):
+    em = discord.Embed(title="tweet",description="Sends latest tweet of specified user!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!tweet [user]")
+    await ctx.send(embed = em)
+
+@help.command()
+async def reddit(ctx):
+    em = discord.Embed(title="reddit",description="Sends latest post from r/programminghumor", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!reddit")
+    await ctx.send(embed = em)
+
+@help.command()
+async def gif(ctx):
+    em = discord.Embed(title="gif",description="Sends gif of entered subject!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!gif <subject>")
+    await ctx.send(embed = em)
+
+@help.command()
+async def serverstats(ctx):
+    em = discord.Embed(title="serverstats",description="Displays stats of all users in ther server!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!serverstats")
+    await ctx.send(embed = em)
+
+@help.command()
+async def stats(ctx):
+    em = discord.Embed(title="stats",description="Displays stats of a specified user.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!stats <user>")
+    await ctx.send(embed = em)
+
+@help.command()
+async def gibpoints(ctx):
+    em = discord.Embed(title="gibpoints",description="Give points to a user.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!gibpoints")
+    await ctx.send(embed = em)
+
+@help.command()
+async def gibgold(ctx):
+    em = discord.Embed(title="gibgold",description="Give gold to a user.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!gibgold")
+    await ctx.send(embed = em)
+
+@help.command()
+async def bible(ctx):
+    em = discord.Embed(title="bible",description="Sends funny quote from the Christan bible.", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!bible")
+    await ctx.send(embed = em)
+
+@help.command()
+async def ping(ctx):
+    em = discord.Embed(title="ping",description="Sends your ping to discord server!", color = discord.Color.green())
+    em.add_field(name="Syntax", value="!ping")
+    await ctx.send(embed = em)
+
+
 
 client.run(TOKEN)
