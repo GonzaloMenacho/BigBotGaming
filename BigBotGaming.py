@@ -108,6 +108,20 @@ async def on_member_join(member: discord.Member=None):
 async def on_member_remove(member):
     print(f'{member} has left the server')
 
+# on reaction emoji moderation
+@client.event
+async def on_reaction_add(reaction, user):
+    channel = reaction.message.channel
+
+    # prompt users to vote
+    if reaction.emoji == "🤓": 
+        await channel.send(f"{user.name} has voted for the message [{reaction.message.content}] to be deleted. React with an {reaction.emoji} if you agree.")
+
+    # delete message
+    if reaction.count == 4 and reaction.emoji == "🤓": 
+        await reaction.message.delete()
+        await channel.send("Message has been deleted.")     
+
 #------------Commands--------------#
 
 # rock, paper, scissors
